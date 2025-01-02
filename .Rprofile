@@ -75,3 +75,10 @@ path <- head(path[file.exists(path)], 1)
 if (!rlang::is_empty(path))
     source(path)
 })
+
+# add Remind options for AppResults
+options(appResults=list( "REMIND"= list(file="https://rse.pik-potsdam.de/data/remind/results/rev1/reduced_overview.rds",
+                                       resultsfolder="https://rse.pik-potsdam.de/data/remind/results/rev1/",
+                                       valfile="https://rse.pik-potsdam.de/data/remind/results/rev1/validation.rds", 
+                                       username="remind",
+                                       password="dr4g0nsc4nfly")))
