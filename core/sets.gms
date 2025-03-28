@@ -151,6 +151,7 @@ all_te          "all energy technologies, including from modules"
     biotrtradIEA    "only needed for reporting"
     biotrmodIEA     "only needed for reporting"
     biochp          "biomass combined heat and power"
+    biochpc         "biomass combined heat and power with carbon capture"
     biohp           "biomass heating plant"
     bioigcc         "integrated biomass gasification combined cycle"
     bioigccc        "integrated biomass gasification combined cycle with CCS"
@@ -1136,6 +1137,7 @@ te(all_te)              "energy technologies"
     biotr           "transformation of biomass"
     biotrmod        "modern solids from biomass"
     biochp          "biomass combined heat and power"
+    biochpc         "biomass combined heat and power with carbon capture"
     biohp           "biomass heating plant"
     bioigcc         "integrated biomass gasification combined cycle"
     bioigccc        "integrated biomass gasification combined cycle with carbon capture"
@@ -1242,7 +1244,8 @@ teAdj(all_te)           "technologies with adjustment costs on capacity addition
     coalh2c         "coal to hydrogen with carbon capture"
     biotr           "transformation of biomass"
     biotrmod        "modern solids from biomass"
-    biochp          "heating plant bio"
+    biochp          "biomass combined heat and power"
+    biochpc         "biomass combined heat and power with carbon capture"
     biohp           "heating plant bio"
     bioigcc         "integrated biomass gasification combined cycle"
     bioigccc        "integrated biomass gasification combined cycle with carbon capture"
@@ -1365,6 +1368,7 @@ teBio(all_te)      "biomass energy systems technologies"
     biotr       "transformation of biomass"
     biotrmod    "modern solids from biomass"
     biochp      "biomass combined heat and power"
+    biochpc     "biomass combined heat and power with carbon capture"
     biohp       "biomass heating plant"
     bioigcc     "integrated biomass gasification combined cycle"
     bioigccc    "integrated biomass gasification combined cycle with carbon capture"
@@ -1383,6 +1387,7 @@ teRe(all_te)     "renewable technologies including biomass"
     biotr       "transformation of biomass"
     biotrmod    "modern solids from biomass"
     biochp      "biomass combined heat and power"
+    biochpc     "biomass combined heat and power with carbon capture"
     biohp       "biomass heating plant"
     bioigcc     "integrated biomass gasification combined cycle"
     bioigccc    "integrated biomass gasification combined cycle with carbon capture"
@@ -1503,6 +1508,7 @@ teBioPebiolc(all_te)      "biomass technologies using pebiolc"
     biotr       "transformation of biomass"
     biotrmod    "modern solids from biomass"
     biochp      "biomass combined heat and power"
+    biochpc         "biomass combined heat and power with carbon capture"
     biohp       "biomass heating plant"
     bioigcc     "integrated biomass gasification combined cycle"
     bioigccc    "integrated biomass gasification combined cycle with carbon capture"
@@ -1540,6 +1546,7 @@ teRegTechCosts(all_te) "all technologies for which we differantiate tech costs b
     tnrs
     bioigcc
     biochp
+    biochpc !! ROSA: to be determined
     geohdr
     hydro
     spv
@@ -2362,6 +2369,7 @@ pe2se(all_enty,all_enty,all_te) "map primary energy carriers to secondary"
     pebiolc.seliqbio.bioethl
     peoil.seel.dot
     pebiolc.seel.biochp
+    pebiolc.seel.biochpc
     pebiolc.seel.bioigcc
     pebiolc.seel.bioigccc
     pebiolc.seh2.bioh2
@@ -2504,6 +2512,7 @@ pc2te(all_enty,all_enty,all_te,all_enty)    "mapping for own consumption of tech
     pecoal.seh2.coalh2.seel
     pecoal.seh2.coalh2c.seel
     pebiolc.seel.biochp.sehe
+    pebiolc.seel.biochpc.sehe
     pebiolc.segabio.biogasc.seel
     segabio.fegas.tdbiogas.seel
     segafos.fegas.tdfosgas.seel
@@ -2589,6 +2598,8 @@ emi2te(all_enty,all_enty,all_te,all_enty)    " map emissions to technologies"
     pebiolc.sesobio.biotrmod.ch4
     pebiolc.seel.biochp.bc
     pebiolc.seel.biochp.oc
+    pebiolc.seel.biochpc.bc
+    pebiolc.seel.biochpc.oc
     pebiolc.sehe.biohp.bc
     pebiolc.sehe.biohp.oc
     pebiolc.seliqbio.bioethl.bc
@@ -2599,6 +2610,9 @@ emi2te(all_enty,all_enty,all_te,all_enty)    " map emissions to technologies"
     pebioil.seliqbio.biodiesel.oc
     pebiolc.seh2.bioh2c.n2o
     pebiolc.seel.biochp.n2o
+    pebiolc.seel.biochpc.co2
+    pebiolc.seel.biochpc.cco2
+    pebiolc.seel.biochpc.n2o
     pebiolc.sehe.biohp.n2o
     pebiolc.sesobio.biotr.n2o
     pebiolc.sesobio.biotrmod.n2o
@@ -2759,7 +2773,7 @@ teSe2rlf(all_te,rlf)        "mapping for techologies to grades. Currently, the i
 *** wind
     (windon,windoff,spv,csp,refliq,hydro,geohe,geohdr,solhe,ngcc,ngccc,ngt,gaschp,gashp,gash2,gash2c,gastr,gasftrec,gasftcrec,dot,
     igcc,igccc,pc,coaltr,coalgas,coalh2,coalh2c,coalchp,coalhp,coalftrec,coalftcrec,
-    biotr,biotrmod,biogas,biogasc,bioftrec,bioftcrec,bioh2,bioh2c,biohp,biochp,bioigcc,bioigccc,
+    biotr,biotrmod,biogas,biogasc,bioftrec,bioftcrec,bioh2,bioh2c,biohp,biochp,biochpc,bioigcc,bioigccc,
     elh2,h2turb,elh2VRE,h2turbVRE,bioethl,bioeths,biodiesel,tnrs,fnrs
     ) . 1
 /
@@ -2860,6 +2874,7 @@ sectorEndoEmi2te(all_enty,all_enty,all_te,sectorEndoEmi)   "map sectors to techn
     peoil.seliqfos.refliq.res
     peoil.seel.dot.power
     pebiolc.seel.biochp.power
+    pebiolc.seel.biochpc.power
     pebiolc.sehe.biohp.power
     pebiolc.sesobio.biotr.indst
     pebiolc.sesobio.biotr.res

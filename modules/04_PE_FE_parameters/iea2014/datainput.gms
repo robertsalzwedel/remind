@@ -272,6 +272,7 @@ p04_prodCoupleGlob("pecoal","seh2","coalh2","seel")         = 0.081;
 p04_prodCoupleGlob("pecoal","seh2","coalh2c","seel")        = 0.054;
 
 p04_prodCoupleGlob("pebiolc","seel","biochp","sehe")        = 0.72;
+p04_prodCoupleGlob("pebiolc","seel","biochpc","sehe")        = 0.72;
 p04_prodCoupleGlob("pebiolc","segabio","biogasc","seel")    = -0.07;
 p04_prodCoupleGlob("pebiolc","seliqbio","bioethl","seel")   = 0.153;
 

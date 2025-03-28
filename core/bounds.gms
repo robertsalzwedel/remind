@@ -173,11 +173,13 @@ if (cm_ccapturescen eq 2,  !! no carbon capture at all
   vm_cap.fx(t,regi_capturescen,"bioftcrec",rlf)    = 0;
   vm_cap.fx(t,regi_capturescen,"bioh2c",rlf)       = 0;
   vm_cap.fx(t,regi_capturescen,"bioigccc",rlf)     = 0;
+  vm_cap.fx(t,regi_capturescen,"biochpc",rlf)     = 0;
 elseif (cm_ccapturescen eq 3),  !! no bio carbon capture:
   vm_cap.fx(t,regi_capturescen,"biogasc",rlf)      = 0;
   vm_cap.fx(t,regi_capturescen,"bioftcrec",rlf)    = 0;
   vm_cap.fx(t,regi_capturescen,"bioh2c",rlf)       = 0;
   vm_cap.fx(t,regi_capturescen,"bioigccc",rlf)     = 0;
+  vm_cap.fx(t,regi_capturescen,"biochpc",rlf)     = 0;
 elseif (cm_ccapturescen eq 4), !! no carbon capture in the electricity sector
   loop(emi2te(enty,"seel",te,"cco2")$( sum(regi_capturescen,pm_emifac("2020",regi_capturescen,enty,"seel",te,"cco2")) > 0 ),
     loop(te2rlf(te,rlf),
