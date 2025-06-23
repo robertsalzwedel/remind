@@ -192,6 +192,36 @@ if (c_bioliqscen eq 0, !! no bioliquids technologies
   vm_deltaCap.up(t,regi,"bioftrec",rlf)$(t.val gt 2005)    = 1.0e-6;
   vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
   vm_deltaCap.up(t,regi,"bioethl",rlf)$(t.val gt 2005)     = 1.0e-6;
+elseif (c_bioliqscen eq 2), !! noFT_wCC
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 3), !! nobioFT 
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioftrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 4), !! nobio_FT-gas_wCC 
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"biogasc",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 5), !! nobio_FT-h2_wCC
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioh2c",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 6), !! onlybioigccc
+  vm_deltaCap.up(t,regi,"biogasc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioh2c",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 7), !! nobioCC
+  vm_deltaCap.up(t,regi,"biogasc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioh2c",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioigccc",rlf)$(t.val gt 2005)   = 1.0e-6;
+elseif (c_bioliqscen eq 8), !! noCC
+  vm_deltaCap.up(t,regi,"biogasc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioh2c",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"bioigccc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"ngccc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"gash2c",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"igccc",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"coalftcrec",rlf)$(t.val gt 2005)   = 1.0e-6;
+  vm_deltaCap.up(t,regi,"coalh2c",rlf)$(t.val gt 2005)   = 1.0e-6;
 ***  vm_cap.fx(t,regi,"bioftcrec",rlf)    = 0;
 ***  vm_cap.fx(t,regi,"bioftrec",rlf)     = 0;
 ***  vm_cap.fx(t,regi,"bioethl",rlf)      = 0;
@@ -202,6 +232,7 @@ if (c_bioliqscen eq 0, !! no bioliquids technologies
 if (c_bioh2scen eq 0, !! no bioh2 technologies
   vm_deltaCap.up(t,regi,"bioh2",rlf)$(t.val gt 2005)       = 1.0e-6;
   vm_deltaCap.up(t,regi,"bioh2c",rlf)$(t.val gt 2005)      = 1.0e-6;
+
 ***  vm_cap.fx(t,regi,"bioh2c",rlf)       = 0;
 ***  vm_cap.fx(t,regi,"bioh2",rlf)       = 0;
 );

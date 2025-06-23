@@ -579,10 +579,18 @@ parameter
 parameter
   c_bioliqscen              "2nd generation bioenergy liquids technology choice"
 ;
-  c_bioliqscen     = 1;        !! def = 1  !! regexp = 0|1
+  c_bioliqscen     = 1;        !! def = 1  !! regexp = 0|1|2|3|4|5|6|7|8
 *' *  (0): no technologies
 *' *  (1): all technologies
+*' *  (2): noFT_wCC
+*' *  (3): nobioFT
+*' *  (4): nobio_FT-gas_wCC
+*' *  (5): nobio_FT-h2_wCC
+*' *  (6): onlybioigccc
+*' *  (7): nobioCC
+*' *  (8): noCC
 *'
+
 parameter
   c_bioh2scen               "bioenergy hydrogen technology choice"
 ;
