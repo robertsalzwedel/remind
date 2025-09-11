@@ -119,6 +119,16 @@ start_coupled <- function(path_remind, path_magpie, cfg_rem, cfg_mag, runname, m
         } else if (cfg_rem$gms$optimization == "nash") {
           if (as.numeric(modstat$s80_bool$val)!=1) message("Warning: REMIND s80_bool not 1. Iteration continued though.")
         }
+        # filter mif file to only include non-aggregated regions in EU21
+        # maybe add condition for it to only apply for EU21 runs? 
+        message("### COUPLING ### Started Creating File without Aggregated regions ")
+        tmp_rem2mag <- quitte::as.quitte(report)
+        regions_to_remove <- c("EU27", "EUR", "NEU")
+        remind_data_filtered <- subset(tmp_rem2mag, !region %in% regions_to_remove)
+        filtered_mif_path = file.path(path_remind,outfolder_rem,"formagpie.mif")
+        quitte::write.mif(remind_data_filtered, path = filtered_mif_path)
+        message("### COUPLING ### Wrote formagie.mif file to  ", outfolder_rem)
+
       } else if (file.exists(paste0(outfolder_rem,"/non_optimal.gdx"))) {
         stop("### COUPLING ### REMIND didn't find an optimal solution. Coupling iteration stopped!")
       } else {
@@ -191,10 +201,10 @@ start_coupled <- function(path_remind, path_magpie, cfg_rem, cfg_mag, runname, m
       cfg_mag$files2export$start <- .setgdxcopy(".gdx",cfg_mag$files2export$start,gdxlist)
     }
 
-    message("### COUPLING ### MAgPIE will be started with\n    Report = ", report, "\n    Folder = ", cfg_mag$results_folder)
-    cfg_mag$path_to_report_bioenergy <- report
+    message("### COUPLING ### MAgPIE will be started with\n    Report = ", filtered_mif_path, "\n    Folder = ", cfg_mag$results_folder)
+    cfg_mag$path_to_report_bioenergy <- filtered_mif_path
     # if no different mif was set for GHG prices use the same as for bioenergy
-    if(! use_external_ghgprices) cfg_mag$path_to_report_ghgprices <- report
+    if(! use_external_ghgprices) cfg_mag$path_to_report_ghgprices <- filtered_mif_path
     ########### START MAGPIE #############
     outfolder_mag <- start_run(cfg_mag, codeCheck=FALSE)
     ######################################

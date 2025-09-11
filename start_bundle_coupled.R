@@ -688,6 +688,7 @@ for (scen in common) {
   }
 }
 
+
 if (! "--test" %in% flags && ! "--gamscompile" %in% flags) {
   cs_runs <- paste0(file.path("output", paste0(prefix_runname, common, "-rem-", max_iterations)), collapse = ",")
   cs_name <- paste0("compScen-all-rem-", max_iterations)
@@ -700,6 +701,7 @@ if (! "--test" %in% flags && ! "--gamscompile" %in% flags) {
   message(cs_command)
 }
 
+# Print Summary 
 message("#### Summary ####")
 message("\nDone.", if(any(c("--test", "--gamscompile") %in% flags)) " You are in TEST or gamscompile mode, no runs were actually started.")
 message("- ", length(finishedRuns), " runs already finished: ", paste(finishedRuns, collapse = ", "))
@@ -708,6 +710,7 @@ message("- ", length(startedRuns), " runs started: ", paste(startedRuns, collaps
 message("- ", length(waitingRuns), " runs are waiting: ", paste(waitingRuns, collapse = ", "))
 message("- qos statistics: ", paste0(names(qosRuns), ": ", unlist(qosRuns), collapse = ", "), ".",
         if (isTRUE(qosRuns[["priority"]] > 4)) " More than 4 runs with qos=priority. They may not be able to run in parallel on the PIK cluster.")
+
 # make sure we have a non-zero exit status if there were any errors
 if (0 < errorsfound) {
   warnings()
