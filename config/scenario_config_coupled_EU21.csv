@@ -4,9 +4,9 @@ SSP2-EU21-NDC;0;;;;SSP2|NDC|AR-natveg|nocc_hist;y2150;raw;;;;;1;;;0;;;0;const203
 SSP2-EU21-NPi;0;;;;SSP2|NPI|AR-natveg|nocc_hist;y2150;raw;;;;;1;;;0;;;0;const2030;734;;0;1;2030;2030;2030
 SSP2-EU21-NPi2025;1;;;;SSP2|NPI|AR-natveg|nocc_hist;y2150;raw;;;;;1;;;0;;;0;const2030;734;;0;1;2030;2030;2030
 SSP2-EU21-PkBudg650;1;;;;SSP2|NDC|AR-natveg|nocc_hist;y2030;raw;;;;;1;2025;2050;0.03;2025;2050;0.3;const2030;734;;0;0;2030;2030;2030
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
+SSP1-EU21-NPi2025;1;;;;VLLO|SSP1-POP-GDP|NPI|AR-natveg|nocc_hist;y2150;raw;;;;;1;;;0;;;0;const2030;734;;0.7;1;2030;2030;2030
+SSP1-EU21-PkBudg1000;1;;;;VLLO|SSP1-POP-GDP|NDC|AR-natveg|nocc_hist;y2030;raw;;;;;1;2025;2050;0.01;2025;2050;0.1;const2030;734;;0.7;1;2030;2030;2030
+SSP1-EU21-PkBudg650;1;;;;VLLO|SSP1-POP-GDP|NDC|AR-natveg|nocc_hist;y2030;raw;;;;;1;2025;2050;0.03;2025;2050;0.3;const2030;734;;0.7;1;2030;2030;2030
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
