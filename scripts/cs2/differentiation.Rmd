@@ -1,0 +1,169 @@
+<!--
+|  (C) 2006-2024 Potsdam Institute for Climate Impact Research (PIK)
+|  authors, and contributors see CITATION.cff file. This file is part
+|  of REMIND and licensed under AGPL-3.0-or-later. Under Section 7 of
+|  AGPL-3.0, you are granted additional permissions described in the
+|  REMIND License Exception, version 1.0 (see LICENSE file).
+|  Contact: remind@pik-potsdam.de
+-->
+# Biomass Feedstock Differentiation Indicators 
+
+## Price Bioenergy
+```{r}
+showLinePlots(data, "Prices|Bioenergy")
+```
+
+## Land Cover Bioenergy Crops
+```{r}
+showLinePlots(data, "Resources|Land Cover|Cropland|Croparea|Bioenergy crops")
+```
+
+## Demand 
+
+### Demand - Bioenergy Total
+
+```{r}
+showLinePlots(data, "Demand|Bioenergy")
+```
+
+### Demand - Bioenergy 2nd gen
+
+```{r}
+showLinePlots(data, "Demand|Bioenergy|2nd generation")
+```
+
+### Demand - Bioenergy 1st gen
+```{r}
+showLinePlots(data, "Demand|Bioenergy|1st generation")
+```
+
+## REMIND Demand 
+
+### PE Biomass Production
+```{r PE Biomass Production}
+items <- c(
+  "PE|Production|Biomass|Lignocellulosic|Energy Crops",
+  "PE|Production|Biomass|Lignocellulosic|Residues",
+  "PE|Production|Biomass|1st Generation",
+  NULL)
+showAreaAndBarPlots(data, items, tot = "PE|Production|Biomass", orderVars = "user", scales = "fixed")
+```
+
+### PE Biomass Consumption
+```{r PE Biomass}
+tot <- "PE|Biomass"
+items <- c(
+  "PE|Biomass|Hydrogen|w/ CC",
+  "PE|Biomass|Hydrogen|w/o CC",
+  "PE|Biomass|Electricity|w/ CC",
+  "PE|Biomass|Electricity|w/o CC",  
+  "PE|Biomass|Heat",
+  "PE|Biomass|Gases|w/ CC",
+  "PE|Biomass|Gases|w/o CC",  
+  "PE|Biomass|Liquids|w/ CC",
+  "PE|Biomass|Liquids|w/o CC",
+  "PE|Biomass|Solids",
+  "PE|Biomass|Biochar",
+  NULL)
+
+showLinePlots(data, tot)
+showAreaAndBarPlots(data, items, tot = tot, orderVars = "user", scales = "fixed")
+```
+
+## Productivity
+
+### Productivity|Landuse Intensity Indicator Tau
+
+```{r}
+showLinePlots(data, "Productivity|Landuse Intensity Indicator Tau")
+```
+
+### Productivity|Crops
+
+```{r}
+showLinePlots(data, "Productivity|Yield|Crops")
+```
+
+
+### Productivity|Bioenergy Crops
+
+```{r}
+showLinePlots(data, "Productivity|Yield|Bioenergy crops")
+```
+
+
+
+## Land Cover 
+
+### Resources|Land Cover Change
+
+```{r}
+items <- c(
+  "Resources|Land Cover Change|Cropland",
+  "Resources|Land Cover Change|Pastures and Rangelands",
+  "Resources|Land Cover Change|Forest",
+  "Resources|Land Cover Change|Other Land",
+  "Resources|Land Cover Change|Urban Area")
+showAreaAndBarPlots(data, items, scales = "fixed")
+```
+
+### Resources|Land Cover Change - LinePlots
+```{r}
+items <- c(
+  "Resources|Land Cover Change|Cropland",
+  "Resources|Land Cover Change|Pastures and Rangelands",
+  "Resources|Land Cover Change|Forest",
+  "Resources|Land Cover Change|Other Land",
+  "Resources|Land Cover Change|Urban Area")
+showMultiLinePlots(data, items, scales = "fixed")
+```
+
+### Crops for Food vs. Bioenergy Crops
+
+```{r}
+items <- c(
+  "Resources|Land Cover|Cropland|Croparea|Bioenergy crops",
+  "Resources|Land Cover|Cropland|Croparea|Crops",
+  "Resources|Land Cover|Cropland|Croparea|Forage")
+showAreaAndBarPlots(data, items, scales = "fixed")
+```
+
+### Crops for Food vs. Bioenergy Crops - LinePlots
+```{r}
+items <- c(
+  "Resources|Land Cover|Cropland|Croparea|Bioenergy crops",
+  "Resources|Land Cover|Cropland|Croparea|Crops",
+  "Resources|Land Cover|Cropland|Croparea|Forage")
+showMultiLinePlots(data, items, scales = "fixed" )
+```
+
+### Types of Bioenergy Crops
+
+```{r}
+items <- c(
+  "Resources|Land Cover|Cropland|Croparea|Bioenergy crops|Short rotation grasses", 
+  "Resources|Land Cover|Cropland|Croparea|Bioenergy crops|Short rotation trees"
+  )
+showAreaAndBarPlots(data, items, scales = "fixed")
+```
+
+
+# Other Indicators 
+## Biodiversity
+
+```{r results='asis'}
+items <- c(
+  "Biodiversity|BII",
+  "Biodiversity|Biodiversity Hotspot BII",
+  "Biodiversity|Cropland Landscapes BII",
+  "Biodiversity|Key Biodiversity Area BII",
+  "Biodiversity|BII in areas outside Biodiversity Hotspots, Intact Forest & Cropland Landscapes",
+  "Biodiversity|Shannon crop area diversity index")
+walk(items, function(v) {
+  cat("###", v, "\n\n")
+  showLinePlots(data, v, ylim = NULL, scales = "fixed")
+  cat("\n\n")
+})
+```
+
+
