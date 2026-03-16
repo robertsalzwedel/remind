@@ -224,7 +224,8 @@ all_te          "all energy technologies, including from modules"
     tdhes           "transmission and distribution for heat to stationary users"
     tdheb           "transmission and distribution for heat to buildings"
 
-    ccsinje         "injection of co2"
+    ccsinjeon       "transport, injection, and storage of co2 onshore"
+    ccsinjeoff      "transport, injection, and storage of co2 offshore"
 *** Storage technology:
     storspv         "storage technology for photo voltaic (PV)"
     storwind        "storage technology for wind onshore"
@@ -963,7 +964,8 @@ sets
     2023_cond, 2023_uncond,
     2024_cond, 2024_uncond,
     2025_cond, 2025_uncond,
-    2025_cond_extrapol, 2025_uncond_extrapol
+    2025_cond_extrapol, 2025_uncond_extrapol,
+    2026_cond, 2026_uncond
   /
   NPi_version "NPi data version for NPi realizations of 40_techpol and 45_carbonprice"
   /
@@ -1132,12 +1134,12 @@ te(all_te)              "energy technologies"
     tdsynhos        "transmission and distribution for heating oil from synthetic origin to stationary users"
     tdh2s           "transmission and distribution for hydrogen to stationary users"
     tdh2t           "transmission and distribution for hydrogen to transportation"
-    tdbiodie        "transmission and distribution for diesel from biomass origin to stationary users"
-    tdfosdie        "transmission and distribution for diesel from fossil origin to stationary users"
-    tdsyndie        "transmission and distribution for diesel from synthetic origin to stationary users"
-    tdbiopet        "transmission and distribution for petrol from biomass origin to stationary users"
-    tdfospet        "transmission and distribution for petrol from fossil origin to stationary users"
-    tdsynpet        "transmission and distribution for petrol from synthetic origin to stationary users"
+    tdbiodie        "transmission and distribution for diesel from biomass origin to transportation"
+    tdfosdie        "transmission and distribution for diesel from fossil origin to transportation"
+    tdsyndie        "transmission and distribution for diesel from synthetic origin to transportation"
+    tdbiopet        "transmission and distribution for petrol from biomass origin to transportation"
+    tdfospet        "transmission and distribution for petrol from fossil origin to transportation"
+    tdsynpet        "transmission and distribution for petrol from synthetic origin to transportation"
     tdbiosos        "transmission and distribution for solids from biomass origin to stationary users"
     tdfossos        "transmission and distribution for solids from fossil origin to stationary users"
     tdhes           "transmission and distribution for heat to stationary users"
@@ -1145,7 +1147,8 @@ te(all_te)              "energy technologies"
     tdh2i           "helper technologies (without cost) to avoid sudden H2 use switching in buildings and industry"
     tdh2b           "helper technologies (without cost) to avoid sudden H2 use switching in buildings and industry"
 
-    ccsinje         "injection of co2, CCS related"
+    ccsinjeon       "transport, injection, and storage of co2 onshore, CCS related"
+    ccsinjeoff      "transport, injection, and storage of co2 offshore, CCS related"
 
     storspv         "storage technology for photo voltaic"
 ***        storwind        "storage technology for wind onshore"
@@ -1171,6 +1174,11 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idrcc           "Direct reduction CCS"
 $endif.cm_subsec_model_steel
 /
+
+***-----------------------------------------------------------------------------
+*** Definition of subsets of 'te':
+***-----------------------------------------------------------------------------
+
 teAdj(all_te)           "technologies with adjustment costs on capacity additions"
 /
     ngcc            "natural gas combined cycle"
@@ -1228,7 +1236,8 @@ teAdj(all_te)           "technologies with adjustment costs on capacity addition
     elh2            "hydrogen elecrolysis"
     h2turb          "hydrogen turbine for electricity production"
     h2curt          "hydrogen production from curtailment"
-    ccsinje         "injection of co2, CCS related"
+    ccsinjeon       "transport, injection, and storage of co2 onshore, CCS related"
+    ccsinjeoff      "transport, injection, and storage of co2 offshore, CCS related"
 
     storspv         "storage technology for PV"
 ***  storwind        "storage technology for wind onshore"
@@ -1249,9 +1258,29 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 $endif.cm_subsec_model_steel
 /
 
-***-----------------------------------------------------------------------------
-*** Definition of subsets of 'te':
-***-----------------------------------------------------------------------------
+teEarlyReti(all_te)    "technologies for which early retirement of existing capacities is allowed (i.e. before end of technical lifetime)."
+/
+    ngcc
+    ngt
+    gastr
+    gaschp
+    gashp
+    gash2
+    gasftrec
+    refliq
+    igcc
+    pc
+    coalchp
+    coalhp
+    coaltr
+    coalgas
+    coalftrec
+    coalh2
+    biochp
+    biohp
+    bioigcc
+    tnrs
+/
 
 *** Note: technologies without endogenous learning can also have decreasing (or increasing) capital cost over time, due to for example convergence to global value
 teLearn(all_te)     "Learning technologies (for which investment costs are reduced endogenously through capacity deployment)."
@@ -1318,6 +1347,12 @@ te2teCCS(all_te,all_te) "Map an energy technology to its CCS equivalent"
     biogas    . biogasc    "gasification of biomass"
     bioftrec  . bioftcrec  "biomass based fischer-tropsch recycle"
     bioh2     . bioh2c     "biomass to hydrogen"
+/
+
+teccsinje(all_te)         "transport, storage, and injection of ico2"
+/
+  ccsinjeon
+  ccsinjeoff
 /
 
 teNoCCS(all_te)     "Technologies without CCS"
@@ -2212,6 +2247,11 @@ char            "characteristics of technologies"
     batteryVREcapRatio  "ratio of battery capacity to storage technology capacity"
     priceLow        "biochar price path assumption"
     priceHigh       "biochar price path assumption"
+    potTechOff      "technical geological storage potential Offshore"
+    potTechOn       "technical geological storage potential Onshore"
+    potLimOff       "limited geological storage potential Offshore"
+    potLimOn        "limited geological storage potential Onshore"
+    mixedOld        "old geological storage potential formerly used in REMIND"    
 /
 
 ***-----------------------------------------------------------------------------
@@ -2518,7 +2558,8 @@ pc2te(all_enty,all_enty,all_te,all_enty)    "mapping for own consumption of tech
     segabio.fegas.tdbiogas.seel
     segafos.fegas.tdfosgas.seel
     pegeo.sehe.geohe.seel
-    cco2.ico2.ccsinje.seel
+    cco2.ico2.ccsinjeon.seel
+    cco2.ico2.ccsinjeoff.seel
 /
 *NB* mappings for emissions, capture and leakage
 emi2te(all_enty,all_enty,all_te,all_enty)    " map emissions to technologies"
@@ -2624,7 +2665,8 @@ emi2te(all_enty,all_enty,all_te,all_enty)    " map emissions to technologies"
     pebiolc.sebiochar.biopyrliq.co2
     segabio.fegas.tdbiogas.ch4
     segafos.fegas.tdfosgas.ch4
-    cco2.ico2.ccsinje.co2
+    cco2.ico2.ccsinjeon.co2
+    cco2.ico2.ccsinjeoff.co2
     pebiolc.seel.bioigccc.co2
     pebiolc.seel.bioigccc.cco2
     seliqbio.fehos.tdbiohos.bc
@@ -2738,12 +2780,14 @@ emi2fuelMine(all_enty,all_enty,rlf)   "missions from fossil fuel extraction"
 /
 ccs2te(all_enty,all_enty,all_te)   "chain for ccs"
 /
-    cco2.ico2.ccsinje
+    cco2.ico2.ccsinjeon
+    cco2.ico2.ccsinjeoff
 /
 
 ccs2Leak(all_enty,all_enty,all_te,all_enty)   "leakage along ccs chain"
 /
-    cco2.ico2.ccsinje.co2
+    cco2.ico2.ccsinjeon.co2
+    cco2.ico2.ccsinjeoff.co2
 /
 
 pe2rlf(all_enty,rlf)     "map exhaustible energy to grades for qm_fuel2pe"
@@ -2818,7 +2862,7 @@ teMat2rlf(all_te,rlf)     "mapping for material production technologies to grade
 
 teCCS2rlf(all_te,rlf)     "mapping for CCS technologies to grades"
 /
-    (ccsinje) . 1
+    (ccsinjeon,ccsinjeoff) . 1
 /
 
 teNoTransform2rlf(all_te,rlf) "mapping for no transformation technologies to grades"
@@ -2877,7 +2921,6 @@ es2ppfen(all_esty,all_in)      "matching ES in ESM to ppfEn in MACRO"
 ***-----------------------------------------------------------------------------
 ***-----------------------------------------------------------------------------
 
-alias(ccs2te,ccs2te2);
 alias(pe2se,pe2se2);
 alias(se2fe,se2fe2);
 

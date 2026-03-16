@@ -74,8 +74,8 @@ q33_cco2_cdr_fromFE(t, regi, te_ccs33)..
 *'  the second part is CO2 captured from energy usage (OAE or DAC)
 *'  the third part is CO2 captured from calcination for OAE
 ***---------------------------------------------------------------------------
-q33_ccsbal(t, regi, ccs2te(ccsCo2(enty), enty2, te))..
-    sum(teCCS2rlf(te, rlf), vm_co2capture_cdr(t, regi, enty, enty2, te, rlf))
+q33_ccsbal(t, regi)..
+    sum(teCCS2rlf(te, rlf), vm_co2capture_cdr(t, regi, "cco2", "ico2", te, rlf))
     =e=
     - vm_emiCdrTeDetail(t, regi, "dac")
     + sm_capture_rate_cdrmodule * (

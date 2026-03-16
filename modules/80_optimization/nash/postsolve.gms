@@ -344,18 +344,23 @@ loop((ttot,ttot2,ext_regi,emiMktExt)$pm_emiMktTarget_dev(ttot,ttot2,ext_regi,emi
 );
 $endif.emiMkt
 
+
 $ifthen.NDC "%carbonprice%" == "NDC" 
+$ifthen.targetCheck  "%cm_NDC_TargetCheckConv%" == "on"
 *** additional criterion: Were NDC emissions targets reached?
 loop((t,regi)$pm_NDCEmiTargetDeviation(t,regi),
-*** criterion actual emissions need to be either below target or only up to cm_NDC_target_DevTol higher than goal emissions
-  if( (pm_NDCEmiTargetDeviation(t,regi)  le -cm_NDC_target_DevTol)
-*** exclude SSA from target check because we do not implement this target but assume CO2 price ceiling
-      AND NOT sameas(regi,"SSA"),
+*** pm_NDCEmiTargetDeviation gives the difference between actual model emissions and target emissions normalized to target emissions, 
+*** so a negative value means that actual emissions are below target, while a positive value means that actual emissions are above target.
+*** The convergence criterion is that actual emissions should at max up to cm_NDC_target_DevTol above the target.
+  if( (pm_NDCEmiTargetDeviation(t,regi)  le -cm_NDC_target_DevTol),
     s80_bool = 0;
     p80_messageShow("NDC") = YES;
   );
 );
+$endif.targetCheck
 $endif.NDC
+
+
 
 *** additional criterion: Were the quantity targets reached by implicit taxes and/or subsidies? 
 $ifthen.cm_implicitQttyTarget not "%cm_implicitQttyTarget%" == "off"
@@ -393,14 +398,25 @@ loop((t,regi,entyPe)$pm_implicitPePriceTarget(t,regi,entyPe),
 );  
 $endIf.cm_implicitPePriceTarget
 
-*** check global budget target from core/postsolve, must be within cm_budgetCO2_absDevTol (default 2 Gt) of target value
-p80_globalBudget_absDev_iter(iteration) = sm_globalBudget_absDev;
-if ( abs(p80_globalBudget_absDev_iter(iteration)) gt cm_budgetCO2_absDevTol , !! check if CO2 budget met in tolerance range,
-  s80_bool = 0;
-  p80_messageShow("globalbudget") = YES;
-);
-
 $ifthen.carbonprice %carbonprice% == "functionalForm"
+*** check global budget target from 45_carbonprice/functionalForm/postsolve
+*** convergence criterion defined via cm_budgetCO2_absDevTol [default = 2 Gt CO2]
+*** positive values of sm_globalBudget_absDev mean that target budget is exceeded (sm_globalBudget_absDev = s45_actualbudgetco2 - cm_budgetCO2from2020)
+*** if damages are not internalized, check positive and negative deviation from target budget
+*** if damages are internalized, only check positive deviation from target budget
+p80_globalBudget_absDev_iter(iteration) = sm_globalBudget_absDev;
+$ifthen.globalBudget "%internalizeDamages%" == "off"
+  if (abs(p80_globalBudget_absDev_iter(iteration)) gt cm_budgetCO2_absDevTol,
+    s80_bool = 0;
+    p80_messageShow("globalbudget") = YES;
+  );
+$else.globalBudget
+  if (p80_globalBudget_absDev_iter(iteration) gt cm_budgetCO2_absDevTol,
+    s80_bool = 0;
+    p80_messageShow("globalbudget") = YES;
+  );
+$endIf.globalBudget
+
 *** check whether cm_peakBudgYr corresponds to year of maximum cumulative CO2 emissions
 if (  (     cm_iterative_target_adj eq 9
         AND cm_peakBudgYr ne sm_peakBudgYr_check  ),

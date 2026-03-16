@@ -153,7 +153,7 @@ vm_emiAllMkt(tall,all_regi,all_enty,all_emiMkt)      "total emissions per emissi
 *** ------------- Emissions Positive Variables --------------------------------
 positive variables
 
-v_co2capture(ttot,all_regi,all_enty,all_enty,all_te,rlf)    "total captured CO2 [GtC/year]"
+v_co2capture(ttot,all_regi)                                 "total captured CO2 [GtC/year]"
 vm_co2CCS(ttot,all_regi,all_enty,all_enty,all_te,rlf)       "total CO2 injected into geological storage [GtC/a]"
 v_co2capturevalve(ttot,all_regi)                            "total CO2 emitted right after capture [GtC/a], note: used in q_balCCUvsCCS to account for different lifetimes of capture and CCU/CCS te and capacities [GtC/year]"
 v_ccsShare(ttot,all_regi)                                    "fraction of captured CO2 that is stored geologically [share]"
@@ -181,7 +181,7 @@ q_emiTeMkt(ttot,all_regi,all_enty,all_emiMkt)        "total energy-emissions per
 q_emiEnFuelEx(ttot,all_regi,all_enty)                "energy emissions from fuel extraction"
 q_emiAllMkt(ttot,all_regi,all_enty,all_emiMkt)       "total regional emissions for each emission market"
 q_emiCdrAll(ttot,all_regi)                           "summing over all CDR emissions"
-q_balcapture(ttot,all_regi,all_enty,all_enty,all_te) "balance equation for carbon capture"
+q_balcapture(ttot,all_regi)                          "balance equation for carbon capture"
 q_balCCUvsCCS(ttot,all_regi)                         "balance equation for captured carbon to CCU or CCS or valve"
 q_ccsShare(ttot,all_regi)                            "calculate the share of captured CO2 that is stored geologically"
 ;
@@ -316,6 +316,16 @@ $ifthen.scaleDemand not "%cm_scaleDemand%" == "off"
 *** FE demand rescaling parameters
   pm_scaleDemand(tall,tall,all_regi)                 "Rescaling factor on final energy and usable energy demand, for selected regions and over a phase-in window." / %cm_scaleDemand% /
 $endif.scaleDemand
+
+$ifthen.scaleDemandBuildTable not "%cm_scaleDemandBuildTable%" == "off"
+*** FE demand rescaling parameters
+  pm_scaleDemandBuildTable(ttot, all_regi)                 "Rescaling factor on buildings final energy and usable energy demand, read-in from a table" 
+$endif.scaleDemandBuildTable
+
+$ifthen.scaleDemandIndTable not "%c_scaleDemandIndTable%" == "off"
+*** FE demand rescaling parameters
+  p_scaleDemandIndTable(ttot, all_regi)                 "Rescaling factor on industry final energy and usable energy demand, read-in from a table" 
+$endif.scaleDemandIndTable
 
 *** energy prices
 pm_FEPrice(ttot,all_regi,all_enty,sector,emiMkt)     "parameter to capture all FE prices across sectors and markets [tr$2005/TWa]"
@@ -546,7 +556,7 @@ $ifthen.tech_CO2capturerate not "%c_tech_CO2capturerate%" == "off"
 p_tech_co2capturerate(all_te)                        "Technology specific CO2 capture rate, fraction of carbon from input fuel that is captured [share]" / %c_tech_CO2capturerate% /
 p_PECarriers_CarbonContent(all_enty)                 "Carbon content of PE carriers [GtC/TWa]"
 $endif.tech_CO2capturerate
-pm_dataccs(all_regi,char,rlf)                        "maximum CO2 storage capacity using CCS technology. [GtC]"
+pm_dataccs(all_regi,char,all_te)                     "maximum CO2 storage capacity using CCS technology. [GtC]"
 pm_ccsinjecrate(all_regi)                            "Regional CCS injection rate factor. [1/year]."
 p_extRegiccsinjecrateRegi(ext_regi)                  "Regional CCS injection rate factor. [1/year]. (extended regions)"
 ;

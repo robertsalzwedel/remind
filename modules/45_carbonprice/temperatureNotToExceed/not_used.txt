@@ -16,7 +16,6 @@ cm_expoLinear_yearStart,input,questionnaire
 pm_shPPPMER,input,questionnaire
 pm_pop,input,questionnaire
 pm_gdp,input,questionnaire
-cm_NDC_divergentScenario,input,questionnaire
 vm_demFeSector,input,questionnaire
 pm_emifac,input,questionnaire
 cm_peakBudgYr,input,added by codeCheck

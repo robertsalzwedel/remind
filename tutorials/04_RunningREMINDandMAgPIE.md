@@ -4,7 +4,29 @@ David Klein (<dklein@pik-potsdam.de>)
 
 ## Summary of new MAgPIE-Nash coupling
 
-The previous coupling, in which REMIND and MAgPIE run sequentially, has been replaced with shifting the MAgPIE runs between the Nash iterations. `start_bundle_coupled.R` and `start_coupled.R` have been removed. Use `start.R` together with a `scenario_config_magpie*.csv` file (formerly known as `scenario_config_coupled.csv`) specifying your MAgPIE settings and a `scenario_config*.csv` file specifying your REMIND seeting to activate the MAgPIE coupling, e.g.
+The former sequential coupling approach—where REMIND and MAgPIE were run one after the other—has been replaced by a coupling in which MAgPIE runs are interleaved between Nash iterations.
+
+As part of this change:
+
+- The scripts `start_bundle_coupled.R` and `start_coupled.R` have been removed.
+- Coupled runs are now started exclusively via `start.R`.
+
+### How to Run a Coupled Scenario
+
+To activate the REMIND–MAgPIE coupling, you now need:
+
+REMIND configuration
+
+- A `scenario_config*.csv` file defining your REMIND settings.
+
+MAgPIE configuration
+
+- A `scenario_config_magpie*.csv` file defining your MAgPIE settings. This file replaces the former `scenario_config_coupled.csv`.
+
+In both cases, `*` is a placeholder for your personalized scenario suffix and should be consistent across files.
+
+To start a coupled run, use: 
+
 ```
 Rscript start.R config/scenario_config_magpie*.csv
 ```
@@ -67,7 +89,7 @@ git checkout develop
 Use `start.R` together with a `scenario_config_magpie*.csv` file (formerly known as `scenario_config_coupled.csv`) to activate the MAgPIE coupling, e.g.
 
 ```
-Rscript start.R config/scenario_config_magpie.R
+Rscript start.R config/scenario_config_magpie.csv
 ```
 
 The new coupling is mainly perforemd in `core/presolve.gms`, by calling an external R script, that transfers the data of the latest Nash solution to MAgPIE, runs MAgPIE, and transfers the MAgPIE data to a `magpieData.gdx`, which is then read by GAMS.

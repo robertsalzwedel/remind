@@ -306,7 +306,8 @@ p04_prodCoupleGlob("pebiolc","seliqbio","bioftcrec","seel") = 0.108;
 p04_prodCoupleGlob("segabio","fegas","tdbiogas","seel")     = -0.05;
 p04_prodCoupleGlob("segafos","fegas","tdfosgas","seel")     = -0.05;
 p04_prodCoupleGlob("pegeo","sehe","geohe","seel")           = -0.3;
-p04_prodCoupleGlob("cco2","ico2","ccsinje","seel")          = -0.005;
+p04_prodCoupleGlob("cco2","ico2","ccsinjeon","seel")        = -0.005;
+p04_prodCoupleGlob("cco2","ico2","ccsinjeoff","seel")       = -0.005; !!DKX assumption correct?
 
 *** Co-Production based on Dorndorf et al (in review)
 p04_prodCoupleGlob("pebiolc","sebiochar","biopyronly","seel") = -0.04; !! 2% of biomass input (Fawzy et al., 2022, https://doi.org/10.1016/j.jclepro.2022.133660)

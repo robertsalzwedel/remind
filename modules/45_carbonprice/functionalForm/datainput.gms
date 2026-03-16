@@ -121,7 +121,7 @@ $endIf.taxCO2globalAnchor
 p45_taxCO2eq_anchor_until2150(ttot) = p45_taxCO2eq_anchor(ttot);
 
 *** Adjust global anchor trajectory so that after cm_peakBudgYr, it increases linearly with fixed annual increase given by cm_taxCO2_IncAfterPeakBudgYr
-if((cm_iterative_target_adj = 0) or (cm_iterative_target_adj = 9),
+if((cm_iterative_target_adj = 0) or (cm_iterative_target_adj = 9) or ((cm_iterative_target_adj eq 5) AND (cm_taxCO2_Shape eq 2)),
   p45_taxCO2eq_anchor(t)$(t.val gt cm_peakBudgYr) = sum(t2$(t2.val eq cm_peakBudgYr), p45_taxCO2eq_anchor_until2150(t2)) !! CO2 tax in peak budget year
                                                   + (t.val - cm_peakBudgYr) * cm_taxCO2_IncAfterPeakBudgYr * sm_DptCO2_2_TDpGtC;  !! increase by cm_taxCO2inc_after_peakBudgYr per year 
 );

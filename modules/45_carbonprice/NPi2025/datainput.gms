@@ -10,15 +10,27 @@
 *** CO2 Tax level growing exponentially from 2025 value taken from input data
 ***----------------------------
 
+*** for years up to 2025 take CO2 price defined by fm_taxCO2eqHist 
+*** fm_taxCO2eqHist reflects historical carbon prices and
+*** assumptions on current aggregate effect of other policies
 pm_taxCO2eq(ttot,regi)$(ttot.val le 2025) = fm_taxCO2eqHist(ttot,regi) * sm_DptCO2_2_TDpGtC;
 
-pm_taxCO2eq(t,regi)$(t.val gt 2025) = sum(ttot, pm_taxCO2eq(ttot,regi)$(ttot.val eq 2025)) + (t.val - 2025) * (20/75) * sm_DptCO2_2_TDpGtC;
+*** for years after 2025, assume modest linear increase of CO2 price by 20 USD/tCO2 over 75 years (2025-2100)
+pm_taxCO2eq(t,regi)$(t.val gt 2025) = pm_taxCO2eq("2025",regi)
+                                      + (t.val - 2025) * (20/75) * sm_DptCO2_2_TDpGtC;
 
+
+*** for EU, take carbon price from fm_taxCO2eqHist up to 2030,
+*** then increase linearly by 20 USD/tCO2 over 75 years (2030-2100)
 loop(ext_regi$sameas(ext_regi, "EUR_regi"),
-  pm_taxCO2eq(t,regi)$(t.val ge 2030 AND regi_group(ext_regi,regi)) = (fm_taxCO2eqHist("2030",regi)+ (t.val - 2030) * (20/75)) * sm_DptCO2_2_TDpGtC;
+  pm_taxCO2eq(t,regi)$(     t.val ge 2030
+                        AND regi_group(ext_regi,regi)) = ( fm_taxCO2eqHist("2030",regi)
+                                                           + (t.val - 2030) * (20/75) ) * sm_DptCO2_2_TDpGtC;
  );
 
-pm_taxCO2eq(t,regi)$(t.val gt 2100) = pm_taxCO2eq("2100",regi); !! to prevent huge taxes after 2100 and the resulting convergence problems, set taxes after 2100 equal to 2100 value
+
+*** after 2100, keep CO2 price constant at 2100 level
+pm_taxCO2eq(t,regi)$(t.val gt 2100) = pm_taxCO2eq("2100",regi);
 
 *** switch off MAC abatement of land emissions, scenario should only have Magpie baseline emissions
 pm_macSwitch(ttot,regi,emiMacMagpie) = 0;

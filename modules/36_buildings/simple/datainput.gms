@@ -60,7 +60,7 @@ $offdelim
 
 *** load UE demand for reporting from input_ref.gdx cm_startyear
 if (cm_startyear gt 2005,
-  execute_load "input_ref.gdx", p36_uedemand_build;
+  Execute_Loadpoint "input_ref.gdx", p36_uedemand_build;
 );
 
 p36_uedemand_build(t,regi,in) = f36_uedemand_build(t,regi,"%cm_demScen%","%cm_rcp_scen_build%",in);
@@ -68,12 +68,21 @@ p36_uedemand_build(t,regi,in) = f36_uedemand_build(t,regi,"%cm_demScen%","%cm_rc
 *** Scale UE demand and floor space in the building sector
 $ifthen.scaleDemand not "%cm_scaleDemand%" == "off"
   loop((tall,tall2,regi) $ pm_scaleDemand(tall,tall2,regi),
-*FL*  rescaled demand               = normal demand                 * [ scaling factor                       + (1-scaling factor)                       * remaining phase-in, between zero and one               ]
-      p36_uedemand_build(t,regi,in) = p36_uedemand_build(t,regi,in) * ( pm_scaleDemand(tall,tall2,regi)      + (1-pm_scaleDemand(tall,tall2,regi))      * min(1, max(0, tall2.val-t.val) / (tall2.val-tall.val)) );
+*FL*  rescaled demand                   = normal demand                     * [ scaling factor                       + (1-scaling factor)                       * remaining phase-in, between zero and one               ]
+      p36_uedemand_build(t,regi,in)     = p36_uedemand_build(t,regi,in)     * ( pm_scaleDemand(tall,tall2,regi)      + (1-pm_scaleDemand(tall,tall2,regi))      * min(1, max(0, tall2.val-t.val) / (tall2.val-tall.val)) );
 *RH*  We assume that the reduction in final energy demand is only partially driven by floor space reduction (exponent 0.3).
-      p36_floorspace(t,regi)        = p36_floorspace(t,regi)        * ( pm_scaleDemand(tall,tall2,regi)**0.3 + (1-pm_scaleDemand(tall,tall2,regi)**0.3) * min(1, max(0, tall2.val-t.val) / (tall2.val-tall.val)) );
+      p36_floorspace(t,regi,secBuild36) = p36_floorspace(t,regi,secBuild36) * ( pm_scaleDemand(tall,tall2,regi)**0.3 + (1-pm_scaleDemand(tall,tall2,regi)**0.3) * min(1, max(0, tall2.val-t.val) / (tall2.val-tall.val)) );
   );
 $endif.scaleDemand
+
+*** Scale UE demand and floor space in the building sector
+$ifthen.scaleDemandBuildTable not "%cm_scaleDemandBuildTable%" == "off"
+  loop( (t,regi),
+      p36_uedemand_build(t,regi,in)     = p36_uedemand_build(t,regi,in)     * pm_scaleDemandBuildTable(t,regi) ;
+*RH*  We assume that the reduction in final energy demand is only partially driven by floor space reduction (exponent 0.3).
+      p36_floorspace(t,regi,secBuild36) = p36_floorspace(t,regi,secBuild36) * pm_scaleDemandBuildTable(t,regi)**0.3 ;
+  );
+$endif.scaleDemandBuildTable
 
 
 ***-----------------------------------------------------------------------------

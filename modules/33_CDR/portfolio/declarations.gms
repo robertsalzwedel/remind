@@ -77,7 +77,7 @@ q33_emiCDR(ttot,all_regi)  "aggregates the (negative) emissions captured by the 
 q33_H2bio_lim(ttot,all_regi)  "limits H2 from bioenergy to FE - H2 demand from CDR, i.e. no H2 from bioenergy for DAC"
 q33_capconst(ttot,all_regi,all_te)  "calculates amount of carbon captured by DAC and OAE"
 q33_cco2_cdr_fromFE(ttot,all_regi,all_te)   "calculates the amount of captured CO2 that comes from burning gas"
-q33_ccsbal(ttot,all_regi,all_enty,all_enty,all_te)  "calculates CCS emissions from CDR technologies"
+q33_ccsbal(ttot,all_regi)  "calculates CCS emissions from CDR technologies"
 
 *** DAC
 q33_DAC_FEdemand(ttot,all_regi,all_enty)  "calculates final energy demand from DAC"
