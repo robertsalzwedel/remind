@@ -54,7 +54,8 @@ vm_fuExtr.up(t, regi, "pebios", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =
     )
   );
 vm_fuExtr.lo(t, regi, "pebios", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =  0.98 * vm_fuExtr.up(t, regi, "pebios", "5");
-if(cm_biomassSensitivity != 0,
+
+if(cm_biomassSensitivity <> 0,
 vm_fuExtr.lo(t,"DEU","pebios","5")$(t.val gt 2030) = 0;
 );
 
@@ -79,7 +80,7 @@ vm_fuExtr.up(t, regi, "pebioil", "5")$(t.val ge 2010 AND t.val ge cm_startyear) 
     )
   );
 vm_fuExtr.lo(t, regi, "pebioil", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =  0.98 * vm_fuExtr.up(t, regi, "pebioil", "5");
-if(cm_biomassSensitivity != 0,
+if(cm_biomassSensitivity <> 0,
 vm_fuExtr.lo(t,"DEU","pebioil","5")$(t.val gt 2030) = 0;
 );
 
