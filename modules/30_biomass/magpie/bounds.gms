@@ -54,6 +54,9 @@ vm_fuExtr.up(t, regi, "pebios", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =
     )
   );
 vm_fuExtr.lo(t, regi, "pebios", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =  0.98 * vm_fuExtr.up(t, regi, "pebios", "5");
+if(cm_biomassSensitivity != 0,
+vm_fuExtr.lo(t,"DEU","pebios","5")$(t.val gt 2030) = 0;
+);
 
 *** Set exogenous trajectory for oil crop feedstocks, using a corridor for
 *** lower and upper bounds of 0.99 to 1.01 for numerical flexibility
@@ -76,6 +79,9 @@ vm_fuExtr.up(t, regi, "pebioil", "5")$(t.val ge 2010 AND t.val ge cm_startyear) 
     )
   );
 vm_fuExtr.lo(t, regi, "pebioil", "5")$(t.val ge 2010 AND t.val ge cm_startyear) =  0.98 * vm_fuExtr.up(t, regi, "pebioil", "5");
+if(cm_biomassSensitivity != 0,
+vm_fuExtr.lo(t,"DEU","pebioil","5")$(t.val gt 2030) = 0;
+);
 
 *** Relax lower bound after 2030 in case of a 1st gen phaseout scenario.
 if(cm_1stgen_phaseout=1,
@@ -154,6 +160,49 @@ display p30_max_pebiolc_path;
 *' we expand the purpose-grown grade by the demand for traditional biomass.
 vm_fuExtr.up(t,regi,"pebiolc","1") = p30_max_pebiolc_path(regi,t) + pm_pedem_res(t,regi,"biotr");
 $endif.bioenergymaxscen
+
+*** Sensitivities April 07, 2026 from Biomass Comparison Project
+if (cm_biomassSensitivity eq 3,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 0.11 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 0.26 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 0.26 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.57 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 2,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 1e-3 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.57 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 1,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 1e-3 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.56 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 4,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 0.22 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 0.55 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 0.55 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.58 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.62 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.65 * sm_EJ_2_TWa;
+);
+
 
 
 *** -------------------------------------------------------------

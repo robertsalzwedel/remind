@@ -170,6 +170,47 @@ loop(regi$(sameAs(regi,"DEU")),
 
 *' ####### Carbon Management
 
+*' Bounds for Biomass Comparison Paper
+*' Limit CO2 underground injection as given below.
+
+if (cm_CCSbestguess eq 1, 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 0.5 * s_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2035) AND (sameas(regi,"DEU"))) = 5   * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 10  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 30  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val ge 2050) AND (sameas(regi,"DEU"))) = 52  *  s_MtCO2_2_GtC;
+);
+
+if (cm_CCS2030DEU eq 1,
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val le 2030) AND (sameas(regi,"DEU"))) = 1 * s_MtCO2_2_GtC;
+elseif (cm_CCS2030DEU eq 2),
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val le 2030) AND (sameas(regi,"DEU"))) = 2 * s_MtCO2_2_GtC;
+elseif (cm_CCS2030DEU eq 3),
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val le 2030) AND (sameas(regi,"DEU"))) = 3 * s_MtCO2_2_GtC;
+elseif (cm_CCS2030DEU eq 4),
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val le 2030) AND (sameas(regi,"DEU"))) = 4 * s_MtCO2_2_GtC;
+elseif (cm_CCS2030DEU eq 0.5),
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val le 2030) AND (sameas(regi,"DEU"))) = 0.5 * s_MtCO2_2_GtC;
+);
+
+*** Sensitivities April 07, 2026
+if (cm_CCSSensitivity eq 1, 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * s_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 10  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 20  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 35  *  s_MtCO2_2_GtC;
+elseif cm_CCSSensitivity eq 2, 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * s_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 20  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 30  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 50  *  s_MtCO2_2_GtC;
+elseif cm_CCSSensitivity eq 3, 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * s_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 30  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 55  * s_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 80  *  s_MtCO2_2_GtC;
+);
+
 *' only start industry carbon capture in Germany by 2030 as status of projects for 2025 unclear,
 *' see IEA CCUS database https://www.iea.org/data-and-statistics/data-tools/ccus-projects-explorer
 vm_emiIndCCS.up(t,regi,emiInd37)$(sameAs(regi,"DEU") AND t.val lt 2030)=0;
