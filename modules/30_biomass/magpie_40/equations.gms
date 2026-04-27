@@ -131,6 +131,15 @@ q30_BioPEProdTotal(t,regi)..
           vm_fuExtr(t,regi,enty,rlf))
 ;
 
+$ifthen.limit_1stgen_total not %cm_biomassSensitivity% == 0
+q30_limit_1stgen_total(t,regi)$p30_limit_1stgen_total(t,regi)..
+  sum(rlf, vm_fuExtr(t,regi,"pebios",rlf))
+  + sum(rlf, vm_fuExtr(t,regi,"pebioil",rlf))
+  =l=
+  p30_limit_1stgen_total(t,regi) * sm_EJ_2_TWa / 1000
+;
+$endif.limit_1stgen_total
+
 ***---------------------------------------------------------------------------
 *' EMF27 limits on fluctuating renewables, only turned on for special EMF27 and AWP 2 scenarios, not for SSP
 ***---------------------------------------------------------------------------

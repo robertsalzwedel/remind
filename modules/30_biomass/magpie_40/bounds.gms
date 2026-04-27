@@ -22,13 +22,13 @@
 vm_fuExtr.up(t,regi,"pebios","5")$(t.val ge 2030)  = p30_datapebio(regi,"pebios","5","maxprod",t);
 vm_fuExtr.up(t,regi,"pebioil","5")$(t.val ge 2030) = p30_datapebio(regi,"pebioil","5","maxprod",t);
 
-if(cm_1stgen_phaseout=0,
-    vm_fuExtr.lo(t,regi,"pebios","5")$(t.val ge 2030)  = 0.9 * p30_datapebio(regi,"pebios","5","maxprod",t);
-    vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val ge 2030) = 0.9 * p30_datapebio(regi,"pebioil","5","maxprod",t);
-else                                                     
-    vm_fuExtr.lo(t,regi,"pebios","5")$(t.val eq 2030)  = 0.9 * p30_datapebio(regi,"pebios","5","maxprod",t);
-    vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val eq 2030) = 0.9 * p30_datapebio(regi,"pebioil","5","maxprod",t);
-);
+* if(cm_1stgen_phaseout=0,
+*     vm_fuExtr.lo(t,regi,"pebios","5")$(t.val ge 2030)  = 0.9 * p30_datapebio(regi,"pebios","5","maxprod",t);
+*     vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val ge 2030) = 0.9 * p30_datapebio(regi,"pebioil","5","maxprod",t);
+* else                                                     
+*     vm_fuExtr.lo(t,regi,"pebios","5")$(t.val eq 2030)  = 0.9 * p30_datapebio(regi,"pebios","5","maxprod",t);
+*     vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val eq 2030) = 0.9 * p30_datapebio(regi,"pebioil","5","maxprod",t);
+* );
 
 
 *** -------------------------------------------------------------
@@ -102,6 +102,49 @@ display p30_max_pebiolc_path;
 vm_fuExtr.up(t,regi,"pebiolc","1") = p30_max_pebiolc_path(regi,t) + pm_pedem_res(t,regi,"biotr");
 $endif.bioenergymaxscen
 
+*** Sensitivities April 07, 2026 from Biomass Comparison Project
+if (cm_biomassSensitivity eq 3,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 0.11 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 0.26 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 0.26 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.57 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 2,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 1e-3 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.57 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 1,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 1e-3 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.56 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.59 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
+
+elseif cm_biomassSensitivity eq 4,
+*** purpose grown
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 0.22 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 0.55 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val ge 2050) = 0.55 * sm_EJ_2_TWa;
+*** residues
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2030) = 0.58 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val eq 2040) = 0.62 * sm_EJ_2_TWa;
+    vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.65 * sm_EJ_2_TWa;
+);
+
+
 
 *** -------------------------------------------------------------
 *' #### Phase out capacities of bioenergy technologies that use
@@ -127,7 +170,7 @@ if (cm_phaseoutBiolc eq 1,
 $IFTHEN.bioprod_regi_lim not "%cm_bioprod_regi_lim%" == "off"
 loop( ext_regi$(p30_bioprod_regi_lim(ext_regi)),
   loop(regi$regi_groupExt(ext_regi,regi),
-    v30_BioPEProdTotal.up(t,regi)$(t.val ge 2035)= p30_bioprod_regi_lim(ext_regi)*sm_EJ_2_TWa
+    v30_BioPEProdTotal.up(t,regi)$(t.val ge cm_startyear)= p30_bioprod_regi_lim(ext_regi)*sm_EJ_2_TWa
 *** distribute across regions in a region group by share in 2005 biomass production as the model is initialized in 2005 with fixed historic production
                                                     * v30_BioPEProdTotal.l("2005",regi) 
                                                     / sum(regi2$regi_groupExt(ext_regi,regi2), 

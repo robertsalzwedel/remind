@@ -93,4 +93,30 @@ loop(ttot$( (ttot.val = 2005) OR (ttot.val = 2010) ),
 );
 display i30_bioen_price_a, i30_bioen_price_b;
 
+parameter p30_limit_1stgen_total(tall,all_regi) "regional limit on total 1st generation biomass [PJ]";
+*** default: no binding limit for any region
+p30_limit_1stgen_total(ttot,regi) = 1e10;
+
+$ifthen.bio "%cm_biomassSensitivity%" == "3"
+* Stable scenario: your baseline values
+  p30_limit_1stgen_total("2030","DEU") = 105.0;
+  p30_limit_1stgen_total("2040","DEU") = 105.0;
+  p30_limit_1stgen_total("2050","DEU") = 105.0;
+$elseif.bio "%cm_biomassSensitivity%" == "2"
+* BAU scenario: baseline values
+  p30_limit_1stgen_total("2030","DEU") = 105.0;
+  p30_limit_1stgen_total("2040","DEU") = 105.0;
+  p30_limit_1stgen_total("2050","DEU") = 105.0;
+$elseif.bio "%cm_biomassSensitivity%" == "1"
+* Low scenario: reduced limits
+  p30_limit_1stgen_total("2030","DEU") = 75.0;
+  p30_limit_1stgen_total("2040","DEU") = 0.1;
+  p30_limit_1stgen_total("2050","DEU") = 0.1;
+$elseif.bio "%cm_biomassSensitivity%" == "4"
+* High scenario: increased limits
+  p30_limit_1stgen_total("2030","DEU") = 80.0;
+  p30_limit_1stgen_total("2040","DEU") = 70.0;
+  p30_limit_1stgen_total("2050","DEU") = 70.0;
+$endif.bio
+
 *** EOF ./modules/30_biomass/magpie_40/datainput.gms

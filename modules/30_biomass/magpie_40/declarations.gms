@@ -46,6 +46,7 @@ i30_bioen_price_b(ttot,all_regi)   "Time dependent slope in bioenergy price form
 p30_pebiolc_price_dummy            "Dummy for the bio-energy price to match the bioenergy bound cm_maxProdBiolc"
 p30_max_pebiolc_dummy              "Dummy for bio energy supply at p30_pebiolc_price_dummy"
 p30_fuelex_dummy(all_regi)         "Dummy for bio-energy supply per region"
+* p30_limit_1stgen_total(ttot,all_regi) "regional limit on total 1st generation biomass (pebios + pebioil) extraction [TWa]"
 ;
 
 variables
@@ -75,5 +76,6 @@ q30_costAdj(ttot,all_regi)         "Improve convergence penalizing deviations fr
 q30_limitTeBio(ttot,all_regi)      "Limit BECCS in policy runs relative to reference scenario"
 q30_BioPEProdTotal(ttot,all_regi)  "Calculate total domestic PE biomass production"
 q30_limitBiotrmod(ttot,all_regi)   "limit the total amount of modern biomass use for solids to the amount of coal use for solids"
+q30_limit_1stgen_total(ttot,all_regi)  "limit total 1st generation biomass (pebios + pebioil) extraction [TWa]"
 ;
 *** EOF ./modules/30_biomass/magpie_40/declarations.gms
