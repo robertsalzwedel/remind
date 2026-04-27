@@ -1164,6 +1164,43 @@ parameter
 *' * (1)   No effective CO2 tax for gross CDR exceeding gross emissions.
 
 parameter
+  cm_CCSbestguess           "Switch to turn on German specific delayed CCS capacities for biomass comparison workshop runs. "
+; 
+  cm_CCSbestguess = 0;    !! def = 0
+*'
+
+parameter
+  cm_CCS2030DEU           "Switch to adjust German specific 2030 CCS amount. "
+; 
+  cm_CCS2030DEU = 0;    !! def = 0
+
+parameter
+  cm_bioftcrecIncoMulti            "Switch to change the multiplier of Inco0 of bioftcrec"
+; 
+  cm_bioftcrecIncoMulti = 1;    !! def = 1
+
+parameter
+  cm_bioGasificationIncoMulti            "Switch to change the multiplier of investment costs of all multipliers"
+; 
+  cm_bioGasificationIncoMulti = 1;    !! def = 1
+
+parameter
+  cm_biomassSensitivity       "scenario for 1st generation biomass limits"
+;
+  cm_biomassSensitivity = 0;     !! def = 0  !! regexp = 0|1|2|3|4
+*' * (off):    0
+*' * (low):    1
+*' * (BAU):    2
+*' * (stable): 3
+*' * (high):   4
+
+parameter
+  cm_CCSSensitivity           "scenario sensitivity for CCS availability"
+; 
+  cm_CCSSensitivity = 0;    !! def = 0  !! regexp = 0|1|2|3
+
+
+parameter
   cm_NetNegEmi_calculation    "switch to choose if net-negative emissions are calculated within an iteration or across iterations"
 ;
   cm_NetNegEmi_calculation    = 0;  !! def = 0 !! regexp = 0|1

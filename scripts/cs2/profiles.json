@@ -72,6 +72,14 @@
 		"modelsHistExclude": "c('IEA ETP B2DS', 'IEA ETP 2DS', 'IEA ETP RTS', 'EDGE_SSP1', 'EDGE_SSP2', 'CEDS', 'IRENA', 'IEA WEO 2021 APS', 'IEA WEO 2021 SDS', 'IEA WEO 2021 SPS')",
 		"mainReg": "'DEU'"
 	},
+		"AriadneDEU-long": {
+		"projectLibrary": "'remind2'",
+		"reg": "c('DEU', 'ECE', 'ECS', 'ENC', 'ESC', 'ESW', 'EU27', 'EWN', 'FRA')",
+		"yearsHist": "c(seq(2000, 2024, 1), seq(2025, 2050, 5))",
+		"yearsBarPlot": "c(2030, 2045,2100)",
+		"modelsHistExclude": "c('IEA ETP B2DS', 'IEA ETP 2DS', 'IEA ETP RTS', 'EDGE_SSP1', 'EDGE_SSP2', 'CEDS', 'IRENA', 'IEA WEO 2021 APS', 'IEA WEO 2021 SDS', 'IEA WEO 2021 SPS')",
+		"mainReg": "'DEU'"
+	},
 	"summary": {
 		"projectLibrary": "'remind2'",
 		"sections": "c(0,1,99)"
