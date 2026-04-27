@@ -326,6 +326,23 @@ display fm_dataglob;
 *** initialize regionalized data using global data
 pm_data(all_regi,char,te) = fm_dataglob(char,te);
 
+*** --------------------------------------------------------------------------------
+*** Sweep to increase investment cost of bioftcrec 
+*** -------------------------------------------------------------------------------
+
+*** initialize regionalized data using global data
+pm_data(all_regi,"inco0","bioftcrec") = pm_data(all_regi,"inco0","bioftcrec") * cm_bioftcrecIncoMulti;
+
+*** --------------------------------------------------------------------------------
+*** Sweep to increase investment cost of all biogasification technologies (effectively all BECCS technologies apart from bioigccc) 
+*** -------------------------------------------------------------------------------
+
+*** initialize regionalized data using global data
+pm_data(all_regi,"inco0","bioftcrec") = pm_data(all_regi,"inco0","bioftcrec") * cm_bioGasificationIncoMulti;
+pm_data(all_regi,"inco0","biogasc") = pm_data(all_regi,"inco0","biogasc") * cm_bioGasificationIncoMulti;
+pm_data(all_regi,"inco0","bioh2c") = pm_data(all_regi,"inco0","bioh2c") * cm_bioGasificationIncoMulti;
+
+
 *** -------------------------------------------------------------------------------
 *** Regional risk premium during building time
 *** -------------------------------------------------------------------------------

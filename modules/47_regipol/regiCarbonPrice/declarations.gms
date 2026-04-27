@@ -40,6 +40,21 @@ $ifThen.emiMktTargetType "%cm_emiMktTarget%" == "nzero"
     2020.2050.(JPN,UKI,USA).all.year.netGHG 0.001                          !! Japan, UK and USA 2050 GHG target
     2020.(2060.CHA,2070.IND).all.year.netCO2 0.001                         !! China 2060 and India 2070 CO2 target
   /
+$elseif.emiMktTargetType "%cm_emiMktTarget%" == "2040targets_deu" 
+  pm_emiMktTarget(ttot,ttot2,ext_regi,emiMktExt,target_type_47,emi_type_47) "region emissions target [GtCO2 or GtCO2eq]" / 
+    2020.2030.DEU.all.year.netGHG_noLULUCF_noBunkers 0.44                  !! Germany 2030 GHG target
+    2035.2040.DEU.all.year.netGHG_LULUCFGrassi 0.150                       !! Germany 2040 GHG target (88 percent reduction), with int carbon credits
+    2040.2045.DEU.all.year.netGHG_LULUCFGrassi 0.001                       !! DE net zero GHG target in 2045 with int carbon credits 
+  /
+$elseif.emiMktTargetType "%cm_emiMktTarget%" == "2040targets" 
+  pm_emiMktTarget(ttot,ttot2,ext_regi,emiMktExt,target_type_47,emi_type_47) "region emissions target [GtCO2 or GtCO2eq]" / 
+    2020.2030.DEU.all.year.netGHG_noLULUCF_noBunkers 0.44                  !! Germany 2030 GHG target
+    2035.2040.DEU.all.year.netGHG_LULUCFGrassi 0.150                       !! Germany 2040 GHG target (88 percent reduction), with int carbon credits
+    2040.2045.DEU.all.year.netGHG_LULUCFGrassi 0.001                       !! DE net zero GHG target in 2045 with int carbon credits 
+    2020.2030.EU27_regi.all.year.netGHG_LULUCFGrassi_intraRegBunker 2.221  !! European Union 2030 GHG target
+    2035.2040.EU27_regi.all.year.netGHG_LULUCFGrassi 0.4635                !! EU perspective 2040 GHG target (90 percent reduction), with flexibilities representing DEU's use of int carbon credits
+    2045.2050.EU27_regi.all.year.netGHG_LULUCFGrassi 0.001                 !! EU27 net zero GHG target in 2050, with flexibilities representing DEU's use of int carbon credits
+  /
 $else.emiMktTargetType
   pm_emiMktTarget(ttot,ttot2,ext_regi,emiMktExt,target_type_47,emi_type_47) "region emissions target [GtCO2 or GtCO2eq]" / %cm_emiMktTarget% /
 $endif.emiMktTargetType
