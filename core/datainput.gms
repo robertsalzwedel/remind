@@ -330,11 +330,32 @@ $ifthen.REG_techcosts not "%cm_techcosts%" == "GLO"   !! cm_techcosts is REG or 
   pm_data(regi,"inco0",teRegTechCosts(te)) = p_inco0("2015",regi,te);
   pm_data(regi,"inco0","spv")              = p_inco0("2020",regi,"spv");
 
+*** -------------------------------------------------------------------------------
+*** Regional risk premium during building time
+*** -------------------------------------------------------------------------------
+
 *** Initial capacity differentiated by region:
   Execute_Loadpoint 'input' p_capCum = vm_capCum.l; !! read vm_capCum(t0,regi,teLearn) from input.gdx to have 2005 investment costs
   p_capCum("2015",regi,te) $ (p_capCum("2015",regi,te) = 0) = fm_dataglob("ccap0",te) / card(regi); !! if technology not in gdx, default to global value
   p_capCum("2020",regi,"spv") $ (p_capCum("2020",regi,"spv") = 0) = 0.6 / card(regi2); !! assume 600GW of solar PV in 2020 globally
 $endif.REG_techcosts
+
+*** --------------------------------------------------------------------------------
+*** Sweep to increase investment cost of bioftcrec 
+*** -------------------------------------------------------------------------------
+
+*** initialize regionalized data using global data
+pm_data(all_regi,"inco0","bioftcrec") = pm_data(all_regi,"inco0","bioftcrec") * cm_bioftcrecIncoMulti;
+
+*** --------------------------------------------------------------------------------
+*** Sweep to increase investment cost of all biogasification technologies (effectively all BECCS technologies apart from bioigccc) 
+*** -------------------------------------------------------------------------------
+
+*** initialize regionalized data using global data
+pm_data(all_regi,"inco0","bioftcrec") = pm_data(all_regi,"inco0","bioftcrec") * cm_bioGasificationIncoMulti;
+pm_data(all_regi,"inco0","biogasc") = pm_data(all_regi,"inco0","biogasc") * cm_bioGasificationIncoMulti;
+pm_data(all_regi,"inco0","bioh2c") = pm_data(all_regi,"inco0","bioh2c") * cm_bioGasificationIncoMulti;
+
 
 
 *** =============== Regional risk premium during building time ====================
