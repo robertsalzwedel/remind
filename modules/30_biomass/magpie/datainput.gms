@@ -86,28 +86,28 @@ p30_limit_1stgen_total(ttot,regi) = 1e10;
 $ifthen.bio "%cm_biomassSensitivity%" == "3"
 * Stable scenario
   loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 105.0;
+***     p30_limit_1stgen_total("2030",regi) = 105.0;
     p30_limit_1stgen_total("2040",regi) = 105.0;
     p30_limit_1stgen_total("2050",regi) = 105.0;
   );
 $elseif.bio "%cm_biomassSensitivity%" == "2"
 * BAU scenario
   loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 105.0;
+*** p30_limit_1stgen_total("2030",regi) = 105.0;
     p30_limit_1stgen_total("2040",regi) = 105.0;
     p30_limit_1stgen_total("2050",regi) = 105.0;
   );
 $elseif.bio "%cm_biomassSensitivity%" == "1"
 * Low scenario
   loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 75.0;
+***    p30_limit_1stgen_total("2030",regi) = 75.0;
     p30_limit_1stgen_total("2040",regi) = 0.1;
     p30_limit_1stgen_total("2050",regi) = 0.1;
   );
 $elseif.bio "%cm_biomassSensitivity%" == "4"
 * High scenario
   loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 80.0;
+***    p30_limit_1stgen_total("2030",regi) = 80.0;
     p30_limit_1stgen_total("2040",regi) = 70.0;
     p30_limit_1stgen_total("2050",regi) = 70.0;
   );
