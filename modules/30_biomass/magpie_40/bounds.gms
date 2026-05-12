@@ -114,6 +114,7 @@ if (cm_biomassSensitivity eq 3,
     vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
 
 elseif cm_biomassSensitivity eq 2,
+*** (2) BAU
 *** purpose grown
     vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
     vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
@@ -124,6 +125,7 @@ elseif cm_biomassSensitivity eq 2,
     vm_fuExtr.up(t,"DEU","pebiolc","2")$(t.val ge 2050) = 0.61 * sm_EJ_2_TWa;
 
 elseif cm_biomassSensitivity eq 1,
+*** (1) low 
 *** purpose grown
     vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2030) = 1e-3 * sm_EJ_2_TWa;
     vm_fuExtr.up(t,"DEU","pebiolc","1")$(t.val eq 2040) = 1e-3 * sm_EJ_2_TWa;
