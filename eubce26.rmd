@@ -1,0 +1,708 @@
+```{r}
+library(quitte)
+library(dplyr)
+library(readr)
+library(stringr)
+library(mip)
+library(httpgd)
+```
+
+```{r}
+hgd()
+```
+
+# Trying to make a plot that makes sense 
+
+```{r}
+KNBal <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/KN2045_Bal_v4_2026-05-11_00.41.12/REMIND_generic_KN2045_Bal_v4_withoutPlus.mif")
+```
+
+
+
+```{r}
+# 3. Set global mip options
+options(mip.mainReg = "DEU")                          # GLO is present in your data as the global aggregate
+options(mip.yearsBarPlot = c(2030, 2050,2100))             # adjust to the years in your data
+```
+
+
+```{r}
+tot <- "PE|Biomass"
+items <- c(
+  "PE|Biomass|Hydrogen",
+  "PE|Biomass|Electricity",
+  "PE|Biomass|Heat",
+  "PE|Biomass|Gases",  
+  "PE|Biomass|Liquids",
+  "PE|Biomass|Solids",
+  "PE|Biomass|Biochar",
+  NULL)
+
+showAreaAndBarPlots(KNBal, items, tot = tot, orderVars = "user", scales = "fixed")
+
+```
+```{r}
+tot <- "PE|Biomass"
+
+regions_to_keep <- c("GLO")
+
+data_filtered <- KNBal %>%
+  filter(region %in% regions_to_keep)
+
+items <- c(
+    "PE|Biomass|Solids",
+    "PE|Biomass|Liquids")
+mip::showAreaAndBarPlots(data_filtered, items, tot, orderVars = "user", scales = "fixed")
+```
+
+
+```{r}
+# ============================================================
+# Biomass allocation — 4×3 sensitivity matrix | Germany 2045
+# ============================================================
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(purrr)
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 1. CONFIGURATION
+# ------------------------------------------------------------
+
+PERIOD_PLOT <- 2045
+REGION_PLOT <- "DEU"          # adjust if different
+
+tot   <- "PE|Biomass"
+items <- c(
+  "PE|Biomass|Solids",
+  "PE|Biomass|Liquids",
+  "PE|Biomass|Gases",
+  "PE|Biomass|Heat",
+  "PE|Biomass|Electricity",
+  "PE|Biomass|Biochar"
+)
+
+# Short labels for the legend (same order as items)
+fraction_labels <- c(
+  "PE|Biomass|Solids"      = "Solids",
+  "PE|Biomass|Liquids"     = "Liquids",
+  "PE|Biomass|Gases"       = "Gases",
+  "PE|Biomass|Heat"        = "Heat",
+  "PE|Biomass|Electricity" = "Electricity",
+  "PE|Biomass|Biochar"     = "Biochar"
+)
+
+fraction_colors <- c(
+  "Solids"      = "#7F77DD",
+  "Liquids"     = "#1D9E75",
+  "Gases"       = "#3B8BD4",
+  "Heat"        = "#E8593C",
+  "Electricity" = "#EF9F27",
+  "Biochar"     = "#888780"
+)
+
+bio_levels <- c("BAU", "Low", "Medium", "High")
+ccs_levels <- c("Low", "Medium", "High")
+```
+
+```{r}
+# bStable ------------------------------------------------------------
+# bStable_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bStable_ccsLow_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+# bStable_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bStable_ccsMedium_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+bStable_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsHigh_2026-05-11_10.50.40/REMIND_generic_bStable_ccsHigh_withoutPlus.mif") |>
+  filter(
+    region == "DEU",
+    grepl("^PE\\|Biomass", variable)
+  )
+
+# bBAU ------------------------------------------------------------
+# bBAU_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsLow_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsLow_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+bBAU_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsMedium_2026-05-11_10.48.39/REMIND_generic_bBAU_ccsMedium_withoutPlus.mif") |>
+  filter(
+    region == "DEU",
+    grepl("^PE\\|Biomass", variable)
+  )
+
+# bBAU_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsHigh_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+
+# bLow ------------------------------------------------------------
+# bLow_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+# bLow_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bLow_ccsMedium_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+# bLow_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bLow_ccsHigh_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+# bHigh ------------------------------------------------------------
+# bHigh_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
+#   filter(
+#     region == "DEU",
+#     grepl("^PE\\|Biomass", variable)
+#   )
+
+bHigh_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bHigh_ccsMedium_withoutPlus.mif") |>
+  filter(
+    region == "DEU",
+    grepl("^PE\\|Biomass", variable)
+  )
+
+bHigh_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsHigh_withoutPlus.mif") |>
+  filter(
+    region == "DEU",
+    grepl("^PE\\|Biomass", variable)
+  )
+```
+
+
+```{r}
+# ============================================================
+# Biomass allocation — flexible single-df version
+# Works with partial data (not all 12 cells required)
+# ============================================================
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(purrr)
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 1. CONFIGURATION
+# ------------------------------------------------------------
+
+PERIOD_PLOT <- 2045
+REGION_PLOT <- "DEU"
+PLOT_MODE   <- "grid"        # "grid" | "individual" | "both"
+PLOT_MODE_ABS <- "grid"   # "grid" | "individual" | "both" | "none"
+UNIT_LABEL    <- "EJ/yr"  # adjust to your unit
+EXPORT_DIR  <- "."
+```
+
+
+```{r}
+tot   <- "PE|Biomass"
+items <- c(
+  "PE|Biomass|Solids",
+  "PE|Biomass|Liquids",
+  "PE|Biomass|Gases",
+  "PE|Biomass|Heat",
+  "PE|Biomass|Electricity",
+  "PE|Biomass|Biochar"
+)
+
+fraction_labels <- c(
+  "PE|Biomass|Solids"      = "Solids",
+  "PE|Biomass|Liquids"     = "Liquids",
+  "PE|Biomass|Gases"       = "Gases",
+  "PE|Biomass|Heat"        = "Heat",
+  "PE|Biomass|Electricity" = "Electricity",
+  "PE|Biomass|Biochar"     = "Biochar"
+)
+
+fraction_colors <- c(
+  "Solids"      = "#7F77DD",
+  "Liquids"     = "#1D9E75",
+  "Gases"       = "#3B8BD4",
+  "Heat"        = "#E8593C",
+  "Electricity" = "#EF9F27",
+  "Biochar"     = "#888780"
+)
+
+bio_levels <- c("BAU", "Low", "Stable", "High")
+ccs_levels <- c("Low", "Medium", "High")
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 2. INPUT — replace with your actual dataframe
+# Expected extra columns: bio_avail, ccs_avail
+# (add these when binding your dfs, or derive from scenario)
+# ------------------------------------------------------------
+
+df_input <- bind_rows(
+#   bBAU_ccsLow    |> mutate(bio_avail = "BAU",    ccs_avail = "Low"),
+  bBAU_ccsMedium |> mutate(bio_avail = "BAU",    ccs_avail = "Medium"),
+#   bBAU_ccsHigh   |> mutate(bio_avail = "BAU",    ccs_avail = "High"),
+#   bLow_ccsLow    |> mutate(bio_avail = "Low",    ccs_avail = "Low"),
+#   bLow_ccsMedium |> mutate(bio_avail = "Low",    ccs_avail = "Medium"),
+#   bLow_ccsHigh   |> mutate(bio_avail = "Low",    ccs_avail = "High"),
+#   bStable_ccsLow    |> mutate(bio_avail = "Stable", ccs_avail = "Low"),
+#   bStable_ccsMedium |> mutate(bio_avail = "Stable", ccs_avail = "Medium"),
+  bStable_ccsHigh   |> mutate(bio_avail = "Stable", ccs_avail = "High"),
+#   bHigh_ccsLow    |> mutate(bio_avail = "High",  ccs_avail = "Low"),
+  bHigh_ccsMedium |> mutate(bio_avail = "High",  ccs_avail = "Medium"),
+  bHigh_ccsHigh   |> mutate(bio_avail = "High",  ccs_avail = "High")
+)   # <-- add this line   # <-- swap to your single df here
+
+# If bio_avail / ccs_avail are not yet columns, derive them
+# from the dataframe name or add them manually, e.g.:
+# df_input <- df_input |> mutate(bio_avail = "Low", ccs_avail = "High")
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 3. FILTER & COMPUTE SHARES
+# ------------------------------------------------------------
+
+df_plot <- df_input |>
+  filter(
+    region   == REGION_PLOT,
+    period   == PERIOD_PLOT,
+    variable %in% c(tot, items)
+  ) |>
+  group_by(bio_avail, ccs_avail) |>
+  filter(scenario == first(unique(scenario))) |>
+  ungroup() |>
+  select(bio_avail, ccs_avail, variable, value) |>
+  pivot_wider(names_from = variable, values_from = value) |>
+  pivot_longer(
+    cols      = all_of(items),
+    names_to  = "variable",
+    values_to = "value"
+  ) |>
+  mutate(
+    share     = value / .data[[tot]],
+    fraction  = factor(fraction_labels[variable], levels = names(fraction_colors)),
+    # Factor levels include full set so grid stays consistent
+    # as data arrives; missing cells simply render empty
+    bio_avail = factor(bio_avail, levels = bio_levels),
+    ccs_avail = factor(ccs_avail, levels = ccs_levels)
+  )
+
+# Detect which cells actually have data — useful for messaging
+cells_present <- df_plot |>
+  distinct(bio_avail, ccs_avail) |>
+  mutate(label = paste0("b", bio_avail, "_ccs", ccs_avail))
+
+message("Cells with data: ", paste(cells_present$label, collapse = ", "))
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 4. SHARED THEME & SCALE
+# ------------------------------------------------------------
+
+theme_biomass <- function(base_size = 10) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      panel.grid        = element_blank(),
+      panel.spacing     = unit(0.4, "cm"),
+      panel.border      = element_rect(colour = "grey85", fill = NA, linewidth = 0.4),
+      strip.text.x      = element_text(size = 9, colour = "grey30", margin = margin(b = 4)),
+      strip.text.y.left = element_text(size = 9, colour = "grey30", angle = 0, hjust = 1,
+                                       margin = margin(r = 6)),
+      strip.placement   = "outside",
+      strip.background  = element_blank(),
+      axis.text.x       = element_blank(),
+      axis.ticks        = element_blank(),
+      axis.title.x      = element_text(size = 9, colour = "grey40", margin = margin(t = 8)),
+      axis.title.y      = element_text(size = 9, colour = "grey40", margin = margin(r = 8)),
+      legend.position   = "right",
+      legend.title      = element_text(size = 9),
+      legend.text       = element_text(size = 8.5),
+      plot.title        = element_text(size = 11, colour = "grey15", margin = margin(b = 3)),
+      plot.subtitle     = element_text(size = 8.5, colour = "grey45", margin = margin(b = 10)),
+      plot.caption      = element_text(size = 7.5, colour = "grey55", hjust = 0),
+      plot.margin       = margin(12, 12, 10, 12)
+    )
+}
+
+scale_fill_biomass <- function() {
+  scale_fill_manual(
+    values = fraction_colors,
+    name   = "Output fraction",
+    guide  = guide_legend(keywidth = unit(0.4, "cm"), keyheight = unit(0.4, "cm"), ncol = 1)
+  )
+}
+
+# ------------------------------------------------------------
+# 5a. GRID PLOT
+# Empty cells render as blank panels — placeholder for
+# data still to come. Switch drop = FALSE keeps the full
+# 4×3 grid intact regardless of how many cells have data.
+# ------------------------------------------------------------
+
+make_grid_plot <- function() {
+  ggplot(df_plot, aes(x = "", y = share, fill = fraction)) +
+    geom_col(width = 0.72, colour = "white", linewidth = 0.25) +
+    facet_grid(
+      rows     = vars(ccs_avail),
+      cols     = vars(bio_avail),
+      labeller = labeller(
+        ccs_avail = c(Low    = "Low CCS",
+                      Medium = "Medium CCS",
+                      High   = "High CCS"),
+        bio_avail = c(BAU    = "BAU biomass",
+                      Low    = "Low biomass",
+                      Medium = "Medium biomass",
+                      High   = "High biomass")
+      ),
+      switch = "y",
+      drop   = FALSE             # keeps empty cells in the grid
+    ) +
+    scale_fill_biomass() +
+    scale_y_continuous(
+      labels = scales::percent_format(accuracy = 1),
+      expand = c(0, 0), limits = c(0, 1)
+    ) +
+    labs(
+      title    = "Biomass allocation across sensitivity scenarios",
+      subtitle = paste0("Germany \u00b7 ", PERIOD_PLOT,
+                        " \u00b7 Rows = CCS availability \u00b7 Columns = biomass availability"),
+      x        = "Biomass availability \u2192",
+      y        = "CCS availability \u2192",
+      caption  = paste0("Region: ", REGION_PLOT,
+                        " \u00b7 Cells with data: ",
+                        paste(cells_present$label, collapse = ", "))
+    ) +
+    theme_biomass()
+}
+
+# ------------------------------------------------------------
+# 5b. INDIVIDUAL PLOTS — only for cells that have data
+# ------------------------------------------------------------
+
+make_individual_plot <- function(bio, ccs) {
+  df_cell <- df_plot |> filter(bio_avail == bio, ccs_avail == ccs)
+
+  ggplot(df_cell, aes(x = "", y = share, fill = fraction)) +
+    geom_col(width = 0.55, colour = "white", linewidth = 0.3) +
+    scale_fill_biomass() +
+    scale_y_continuous(
+      labels = scales::percent_format(accuracy = 1),
+      expand = c(0, 0), limits = c(0, 1)
+    ) +
+    labs(
+      title    = paste0(bio, " biomass \u00b7 ", ccs, " CCS"),
+      subtitle = paste0("Germany \u00b7 ", PERIOD_PLOT),
+      x        = NULL,
+      y        = "Share of total biomass",
+      caption  = paste("Region:", REGION_PLOT,
+                       "\u00b7 PE|Biomass fractions as share of PE|Biomass")
+    ) +
+    theme_biomass(base_size = 11) +
+    theme(
+      axis.title.y = element_text(size = 9, colour = "grey40", margin = margin(r = 6)),
+      axis.text.y  = element_text(size = 8, colour = "grey40")
+    )
+}
+
+# ------------------------------------------------------------
+# 5c. GRID PLOT — absolute values
+# ------------------------------------------------------------
+make_grid_plot_abs <- function() {
+  y_max <- df_plot |>
+  group_by(bio_avail, ccs_avail) |>
+  summarise(total = sum(value, na.rm = TRUE), .groups = "drop") |>
+  pull(total) |>
+  max(na.rm = TRUE)
+
+  ggplot(df_plot, aes(x = "", y = value, fill = fraction)) +
+    geom_col(width = 0.72, colour = "white", linewidth = 0.25) +
+    facet_grid(
+      rows     = vars(ccs_avail),
+      cols     = vars(bio_avail),
+      labeller = labeller(
+        ccs_avail = c(Low    = "Low CCS",
+                      Medium = "Medium CCS",
+                      High   = "High CCS"),
+        bio_avail = c(BAU    = "BAU biomass",
+                      Low    = "Low biomass",
+                      Stable = "Stable biomass",
+                      High   = "High biomass")
+      ),
+      switch = "y",
+      drop   = FALSE
+    ) +
+    scale_fill_biomass() +
+    scale_y_continuous(
+      expand = c(0, 0),
+      limits = c(0, y_max * 1.05),   # 5% headroom
+      name   = UNIT_LABEL
+    ) +
+    labs(
+      title    = "Biomass allocation across sensitivity scenarios (absolute)",
+      subtitle = paste0("Germany \u00b7 ", PERIOD_PLOT,
+                        " \u00b7 Rows = CCS availability \u00b7 Columns = biomass availability"),
+      x        = "Biomass availability \u2192",
+      y        = paste0("CCS availability \u2192"),
+      caption  = paste0("Region: ", REGION_PLOT,
+                        " \u00b7 Unit: ", UNIT_LABEL,
+                        " \u00b7 Cells with data: ",
+                        paste(cells_present$label, collapse = ", "))
+    ) +
+    theme_biomass() +
+    theme(
+      # show y-axis text so values are readable across cells
+      axis.text.y  = element_text(size = 7, colour = "grey40"),
+      axis.ticks.y = element_line(colour = "grey70", linewidth = 0.3)
+    )
+}
+
+# ------------------------------------------------------------
+# 5d. INDIVIDUAL PLOTS — absolute values
+# ------------------------------------------------------------
+make_individual_plot_abs <- function(bio, ccs) {
+  df_cell <- df_plot |> filter(bio_avail == bio, ccs_avail == ccs)
+  y_max <- df_plot |>
+  group_by(bio_avail, ccs_avail) |>
+  
+  summarise(total = sum(value, na.rm = TRUE), .groups = "drop") |>
+  pull(total) |>
+  max(na.rm = TRUE)
+  ggplot(df_cell, aes(x = "", y = value, fill = fraction)) +
+    geom_col(width = 0.55, colour = "white", linewidth = 0.3) +
+    scale_fill_biomass() +
+    scale_y_continuous(
+      expand = c(0, 0),
+      limits = c(0, y_max * 1.05)
+    ) +
+    labs(
+      title    = paste0(bio, " biomass \u00b7 ", ccs, " CCS"),
+      subtitle = paste0("Germany \u00b7 ", PERIOD_PLOT),
+      x        = NULL,
+      y        = UNIT_LABEL,
+      caption  = paste("Region:", REGION_PLOT,
+                       "\u00b7 Unit:", UNIT_LABEL)
+    ) +
+    theme_biomass(base_size = 11) +
+    theme(
+      axis.title.y = element_text(size = 9, colour = "grey40", margin = margin(r = 6)),
+      axis.text.y  = element_text(size = 8, colour = "grey40"),
+      axis.ticks.y = element_line(colour = "grey70", linewidth = 0.3)
+    )
+}
+
+# ------------------------------------------------------------
+# 6. RENDER & EXPORT
+# ------------------------------------------------------------
+
+if (PLOT_MODE %in% c("grid", "both")) {
+  p_grid <- make_grid_plot()
+  print(p_grid)
+
+#   ggsave(
+#     file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_grid.pdf")),
+#     plot = p_grid, width = 200, height = 140, units = "mm", device = cairo_pdf
+#   )
+#   ggsave(
+#     file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_grid.png")),
+#     plot = p_grid, width = 200, height = 140, units = "mm", dpi = 300
+#   )
+#   message("Saved: grid plot")
+}
+
+if (PLOT_MODE %in% c("individual", "both")) {
+  # Only iterate over cells that actually have data
+  pwalk(cells_present, function(bio_avail, ccs_avail, label) {
+    p <- make_individual_plot(bio_avail, ccs_avail)
+    print(p)
+
+    # ggsave(
+    #   file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_", label, ".pdf")),
+    #   plot = p, width = 90, height = 110, units = "mm", device = cairo_pdf
+    # )
+    # ggsave(
+    #   file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_", label, ".png")),
+    #   plot = p, width = 90, height = 110, units = "mm", dpi = 300
+    # )
+    # message("Saved: ", label)
+  })
+}
+
+# Absolute plots
+if (PLOT_MODE_ABS %in% c("grid", "both")) {
+  p_grid_abs <- make_grid_plot_abs()
+  print(p_grid_abs)
+  # ggsave(file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_grid_abs.pdf")),
+  #        plot = p_grid_abs, width = 200, height = 140, units = "mm", device = cairo_pdf)
+  # ggsave(file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_grid_abs.png")),
+  #        plot = p_grid_abs, width = 200, height = 140, units = "mm", dpi = 300)
+}
+
+if (PLOT_MODE_ABS %in% c("individual", "both")) {
+  pwalk(cells_present, function(bio_avail, ccs_avail, label) {
+    p <- make_individual_plot_abs(bio_avail, ccs_avail)
+    print(p)
+    # ggsave(file.path(EXPORT_DIR, paste0("biomass_allocation_", PERIOD_PLOT, "_", label, "_abs.pdf")),
+    #        plot = p, width = 90, height = 110, units = "mm", device = cairo_pdf)
+  })
+}
+```
+
+
+```{r}
+# ------------------------------------------------------------
+# 3. FILTER & COMPUTE SHARES
+# ------------------------------------------------------------
+
+df_plot <- df_all |>
+  filter(
+    region   == REGION_PLOT,
+    period   == PERIOD_PLOT,
+    variable %in% c(tot, items)
+  ) |>
+  # keep only the first scenario per cell if multiple exist;
+  # replace with filter(scenario == "your_scenario") if needed
+  group_by(bio_avail, ccs_avail) |>
+  filter(scenario == first(unique(scenario))) |>
+  ungroup() |>
+  select(bio_avail, ccs_avail, variable, value) |>
+  pivot_wider(names_from = variable, values_from = value) |>
+  pivot_longer(
+    cols      = all_of(items),
+    names_to  = "variable",
+    values_to = "value"
+  ) |>
+  mutate(
+    share     = value / .data[[tot]],
+    fraction  = fraction_labels[variable],
+    fraction  = factor(fraction, levels = names(fraction_colors)),
+    bio_avail = factor(bio_avail, levels = bio_levels),
+    ccs_avail = factor(ccs_avail, levels = ccs_levels)
+  )
+
+# ------------------------------------------------------------
+# 4. PLOT
+# ------------------------------------------------------------
+
+p <- ggplot(df_plot, aes(x = "", y = share, fill = fraction)) +
+  geom_col(width = 0.72, colour = "white", linewidth = 0.25) +
+  facet_grid(
+    rows     = vars(ccs_avail),
+    cols     = vars(bio_avail),
+    labeller = labeller(
+      ccs_avail = c(Low    = "Low CCS",
+                    Medium = "Medium CCS",
+                    High   = "High CCS"),
+      bio_avail = c(BAU    = "BAU biomass",
+                    Low    = "Low biomass",
+                    Medium = "Medium biomass",
+                    High   = "High biomass")
+    ),
+    switch = "y"
+  ) +
+  # Vertical separator to visually isolate BAU from the
+  # Low/Medium/High gradient. Draws a line after column 1.
+  geom_vline(
+    data        = df_plot |> filter(bio_avail == "Low", ccs_avail == "Low"),
+    aes(xintercept = 1.5),
+    colour      = "grey50",
+    linewidth   = 0.4,
+    linetype    = "dashed",
+    inherit.aes = FALSE
+  ) +
+  scale_fill_manual(
+    values = fraction_colors,
+    name   = "Output fraction",
+    guide  = guide_legend(keywidth = unit(0.4, "cm"), keyheight = unit(0.4, "cm"), ncol = 1)
+  ) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1),
+    expand = c(0, 0),
+    limits = c(0, 1)
+  ) +
+  labs(
+    title    = "Biomass allocation across sensitivity scenarios",
+    subtitle = paste0("Germany \u00b7 ", PERIOD_PLOT,
+                      " \u00b7 Rows = CCS availability \u00b7 Columns = biomass availability"),
+    x        = "Biomass availability \u2192",
+    y        = "CCS availability \u2192",
+    caption  = paste("Region:", REGION_PLOT,
+                     "\u00b7 PE|Biomass fractions as share of total primary biomass energy",
+                     "\u00b7 Dashed line separates BAU from sensitivity range")
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    panel.grid        = element_blank(),
+    panel.spacing     = unit(0.4, "cm"),
+    panel.border      = element_rect(colour = "grey85", fill = NA, linewidth = 0.4),
+    strip.text.x      = element_text(size = 9, colour = "grey30", margin = margin(b = 4)),
+    strip.text.y.left = element_text(size = 9, colour = "grey30", angle = 0, hjust = 1,
+                                     margin = margin(r = 6)),
+    strip.placement   = "outside",
+    strip.background  = element_blank(),
+    # Highlight BAU strip label to visually distinguish it
+    strip.text.x.top  = element_text(size = 9, colour = "grey30", margin = margin(b = 4)),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank(),
+    axis.title.x      = element_text(size = 9, colour = "grey40", margin = margin(t = 8)),
+    axis.title.y      = element_text(size = 9, colour = "grey40", margin = margin(r = 8)),
+    legend.position   = "right",
+    legend.title      = element_text(size = 9),
+    legend.text       = element_text(size = 8.5),
+    plot.title        = element_text(size = 11, colour = "grey15", margin = margin(b = 3)),
+    plot.subtitle     = element_text(size = 8.5, colour = "grey45", margin = margin(b = 10)),
+    plot.caption      = element_text(size = 7.5, colour = "grey55", hjust = 0),
+    plot.margin       = margin(12, 12, 10, 12)
+  )
+
+print(p)
+
+# # ------------------------------------------------------------
+# # 5. EXPORT
+# # ------------------------------------------------------------
+
+# # Vector PDF — best for journal submission (fonts embedded)
+# ggsave(
+#   "biomass_allocation_2045.pdf",
+#   plot   = p,
+#   width  = 200,      # slightly wider than 3-col to accommodate 4 columns
+#   height = 140,
+#   units  = "mm",
+#   device = cairo_pdf
+# )
+
+# # High-res PNG — for poster or preprint
+# ggsave(
+#   "biomass_allocation_2045.png",
+#   plot   = p,
+#   width  = 200,
+#   height = 140,
+#   units  = "mm",
+#   dpi    = 300
+# )
+
+# message("Saved: biomass_allocation_2045.pdf / .png")
+```
+
