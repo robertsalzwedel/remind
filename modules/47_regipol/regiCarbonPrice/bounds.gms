@@ -195,20 +195,20 @@ elseif (cm_CCS2030DEU eq 0.5),
 
 *** Sensitivities April 07, 2026
 if (cm_CCSSensitivity eq 1, 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 10  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 20  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 35  *  sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 10  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 20  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 35  *  sm_MtCO2_2_GtC;
 elseif cm_CCSSensitivity eq 2, 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 20  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 30  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 50  *  sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 20  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 30  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 50  *  sm_MtCO2_2_GtC;
 elseif cm_CCSSensitivity eq 3, 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 30  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 55  * sm_MtCO2_2_GtC;
-    vm_co2CCS.up(t,regi,"cco2","ico2",te,rlf)$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 80  *  sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2030) AND (sameas(regi,"DEU"))) = 1 * sm_MtCO2_2_GtC; 
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2040) AND (sameas(regi,"DEU"))) = 30  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2045) AND (sameas(regi,"DEU"))) = 55  * sm_MtCO2_2_GtC;
+    vm_co2CCS.up(t,regi,"cco2","ico2","ccsinjeon","1")$((t.val eq 2050) AND (sameas(regi,"DEU"))) = 80  *  sm_MtCO2_2_GtC;
 );
 
 *' only start industry carbon capture in Germany by 2030 as status of projects for 2025 unclear,
