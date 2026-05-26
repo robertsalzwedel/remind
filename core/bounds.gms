@@ -280,6 +280,13 @@ if(c_bioliqscen = 0, !! no bioliquids technologies
 
 *' Switch to prevent new capacities of 1st generation biofuel technologies after 2030, allowing more cost-efficient
 *' and more sustainable new generation of biofuel technologies free entrance to the market
+if(cm_biomassSensitivity eq 1,
+  loop(regi$sameas(regi,"DEU"),
+   vm_deltaCap.up(t,regi,"bioeths",rlf)   $ (t.val > 2030) = 0;
+   vm_deltaCap.up(t,regi,"biodiesel",rlf) $ (t.val > 2030) = 0;
+  );
+);
+
 if(cm_1stgen_phaseout = 1,
    vm_deltaCap.up(t,regi,"bioeths",rlf)   $ (t.val > 2030) = 0;
    vm_deltaCap.up(t,regi,"biodiesel",rlf) $ (t.val > 2030) = 0;

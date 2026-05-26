@@ -110,82 +110,82 @@ ccs_levels <- c("Low", "Medium", "High")
 ```
 
 ```{r}
-# bStable ------------------------------------------------------------
-# bStable_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bStable_ccsLow_withoutPlus.mif") |>
+# # bStable ------------------------------------------------------------
+# # bStable_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bStable_ccsLow_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# # bStable_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bStable_ccsMedium_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# bStable_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsHigh_2026-05-11_10.50.40/REMIND_generic_bStable_ccsHigh_withoutPlus.mif") |>
 #   filter(
 #     region == "DEU",
 #     grepl("^PE\\|Biomass", variable)
 #   )
 
-# bStable_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bStable_ccsMedium_withoutPlus.mif") |>
+# # bBAU ------------------------------------------------------------
+# # bBAU_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsLow_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsLow_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# bBAU_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsMedium_2026-05-11_10.48.39/REMIND_generic_bBAU_ccsMedium_withoutPlus.mif") |>
 #   filter(
 #     region == "DEU",
 #     grepl("^PE\\|Biomass", variable)
 #   )
 
-bStable_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bStable_ccsHigh_2026-05-11_10.50.40/REMIND_generic_bStable_ccsHigh_withoutPlus.mif") |>
-  filter(
-    region == "DEU",
-    grepl("^PE\\|Biomass", variable)
-  )
+# # bBAU_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsHigh_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
 
-# bBAU ------------------------------------------------------------
-# bBAU_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsLow_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsLow_withoutPlus.mif") |>
+
+# # bLow ------------------------------------------------------------
+# # bLow_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# # bLow_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bLow_ccsMedium_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# # bLow_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bLow_ccsHigh_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# # bHigh ------------------------------------------------------------
+# # bHigh_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
+# #   filter(
+# #     region == "DEU",
+# #     grepl("^PE\\|Biomass", variable)
+# #   )
+
+# bHigh_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bHigh_ccsMedium_withoutPlus.mif") |>
 #   filter(
 #     region == "DEU",
 #     grepl("^PE\\|Biomass", variable)
 #   )
 
-bBAU_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsMedium_2026-05-11_10.48.39/REMIND_generic_bBAU_ccsMedium_withoutPlus.mif") |>
-  filter(
-    region == "DEU",
-    grepl("^PE\\|Biomass", variable)
-  )
-
-# bBAU_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bBAU_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bBAU_ccsHigh_withoutPlus.mif") |>
+# bHigh_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsHigh_withoutPlus.mif") |>
 #   filter(
 #     region == "DEU",
 #     grepl("^PE\\|Biomass", variable)
 #   )
-
-
-# bLow ------------------------------------------------------------
-# bLow_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
-#   filter(
-#     region == "DEU",
-#     grepl("^PE\\|Biomass", variable)
-#   )
-
-# bLow_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bLow_ccsMedium_withoutPlus.mif") |>
-#   filter(
-#     region == "DEU",
-#     grepl("^PE\\|Biomass", variable)
-#   )
-
-# bLow_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bLow_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bLow_ccsHigh_withoutPlus.mif") |>
-#   filter(
-#     region == "DEU",
-#     grepl("^PE\\|Biomass", variable)
-#   )
-
-# bHigh ------------------------------------------------------------
-# bHigh_ccsLow <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsLow_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsLow_withoutPlus.mif") |>
-#   filter(
-#     region == "DEU",
-#     grepl("^PE\\|Biomass", variable)
-#   )
-
-bHigh_ccsMedium <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsMedium_2026-05-11_10.47.13/REMIND_generic_bHigh_ccsMedium_withoutPlus.mif") |>
-  filter(
-    region == "DEU",
-    grepl("^PE\\|Biomass", variable)
-  )
-
-bHigh_ccsHigh <- read.quitte("/p/tmp/robertsa/biomassworkshop/ariadne/remind/output/bHigh_ccsHigh_2026-05-11_00.42.39/REMIND_generic_bHigh_ccsHigh_withoutPlus.mif") |>
-  filter(
-    region == "DEU",
-    grepl("^PE\\|Biomass", variable)
-  )
 ```
 
 
