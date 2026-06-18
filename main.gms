@@ -1877,7 +1877,7 @@ $setglobal cm_inco0RegiFactor  off  !! def = off
 *** cm_CCS_markup "multiplicative factor for CSS cost markup"
 ***   def <- "off" = use default CCS pm_inco0_t values.
 ***   or number (ex. 0.66), multiply by 0.66 the CSS cost markup
-$setglobal cm_ccsinjeCost med !! def = med !! regexp = med|low|high|6xhigh
+$setglobal cm_ccsinjeCost high !! def = med !! regexp = med|low|high|6xhigh
 *' switch from standard to low and high CO2 transport & storage cost.
 *' Warning: it applies absolute values; only use it in combination with default c_techAssumptScen SSP2. 
 *'  * (low): old estimate before 03/2024; ~7.5 USD/tCO2 in 2035. Also applies tech_stat=2 and constrTme=0
