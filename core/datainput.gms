@@ -249,6 +249,9 @@ $if "%cm_ccsinjeCost%" == "low" fm_dataglob("constrTme","ccsinjeoff") = 0;      
 *** high estimate: ~20USD/tCO2 (constant), assuming upper end of storage cost and long transport distances
 $if "%cm_ccsinjeCost%" == "high" fm_dataglob("inco0","ccsinjeon")  = 550;
 $if "%cm_ccsinjeCost%" == "high" fm_dataglob("inco0","ccsinjeoff") = 825;       !! DKX: assumptions
+*** 6xhigh estimate: ~ plus 100 USD (?) in onshore case or ASMASYS scenarios
+$if "%cm_ccsinjeCost%" == "6xhigh" fm_dataglob("inco0","ccsinjeon")  = 550 + 5 * 550 * 1.15;
+$if "%cm_ccsinjeCost%" == "6xhigh" fm_dataglob("inco0","ccsinjeoff") = 825 + 5 * 550 * 1.15;       !! DKX: assumptions
 
 
 *** cm_VRE_supply_assumptions: Modify learning and floor costs for electricity storage and production of VRE
