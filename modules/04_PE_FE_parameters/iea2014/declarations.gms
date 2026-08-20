@@ -23,6 +23,7 @@ p04_prodCoupleGlob(all_enty,all_enty,all_te,all_enty)           "global couple p
 
 p04_IO_output_beforeFix(ttot,all_regi,all_enty,all_enty,all_te) "Energy output based on IEA data as read in from input data before correction from FE trajectories"
 p04_IO_output_beforeFix_Total(ttot,all_regi,all_enty)           "Energy output based on IEA data as read in from input data before correction from FE trajectories summed over SE"
+p04_pedem_res_iea(ttot,all_regi,all_te)  "Residue PE demand from IEA IO input (pre-extrapolation) [TWa]"
 ;
 
 *** EOF ./modules/04_PE_FE_parameters/iea2014/declarations.gms

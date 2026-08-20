@@ -521,8 +521,32 @@ p05_cap_res(ttot,regi,teBioPebiolc) =
 * pm_pedem_res(ttot,regi,teBioPebiolc) = p05_cap_res(ttot,regi,teBioPebiolc)* pm_cf(ttot,regi,teBioPebiolc) / pm_data(regi,"eta",teBioPebiolc);
 
 * *** PE demand for pebiolc residues aligning to IEA database. Might need to do some averaging here. 
-pm_pedem_res(ttot,regi,teBioPebiolc)$sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc))
-  = sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc));
+* pm_pedem_res(ttot,regi,teBioPebiolc)$sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc))
+*   = sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc));
+
+
+*** PE demand for pebiolc residues aligned to IEA database.
+*** Derives residue PE demand directly from IEA IO input data,
+*** forward-filling the last observed value for years without IEA coverage.
+
+p04_pedem_res_iea(ttot,regi,teBioPebiolc) =
+  sum(pe2se("pebiolc",entySe,teBioPebiolc),
+      f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc));
+
+*** Use IEA data where available
+pm_pedem_res(ttot,regi,teBioPebiolc)
+    $p04_pedem_res_iea(ttot,regi,teBioPebiolc) =
+  p04_pedem_res_iea(ttot,regi,teBioPebiolc);
+
+*** Forward-fill last available value for years beyond IEA coverage
+*** (loop order guaranteed by ordered set ttot)
+loop(ttot$(ttot.val ge 2020),
+  pm_pedem_res(ttot,regi,teBioPebiolc)
+      $(NOT p04_pedem_res_iea(ttot,regi,teBioPebiolc)) =
+    pm_pedem_res(ttot-1,regi,teBioPebiolc);
+);
+
+display p04_pedem_res_iea, pm_pedem_res;
 
 display p05_deltacap_res,p05_cap_res,pm_pedem_res;
 ***---------------------------------------------------------------------------
