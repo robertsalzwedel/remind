@@ -517,8 +517,12 @@ p05_cap_res(ttot,regi,teBioPebiolc) =
     * p05_deltacap_res(ttot-(pm_tsu2opTimeYr(ttot,opTimeYr)-1),regi,teBioPebiolc)
   )
 ;
-*** PE demand for pebiolc resulting from all technologies using pebiolc assuming they would phase out after 2005
-pm_pedem_res(ttot,regi,teBioPebiolc) = p05_cap_res(ttot,regi,teBioPebiolc)* pm_cf(ttot,regi,teBioPebiolc) / pm_data(regi,"eta",teBioPebiolc);
+* *** PE demand for pebiolc resulting from all technologies using pebiolc assuming they would phase out after 2005
+* pm_pedem_res(ttot,regi,teBioPebiolc) = p05_cap_res(ttot,regi,teBioPebiolc)* pm_cf(ttot,regi,teBioPebiolc) / pm_data(regi,"eta",teBioPebiolc);
+
+* *** PE demand for pebiolc residues aligning to IEA database. Might need to do some averaging here. 
+pm_pedem_res(ttot,regi,teBioPebiolc)$sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc))
+  = sum(pe2se("pebiolc",entySe,teBioPebiolc), f04_IO_input(ttot,regi,"pebiolc",entySe,teBioPebiolc));
 
 display p05_deltacap_res,p05_cap_res,pm_pedem_res;
 ***---------------------------------------------------------------------------
