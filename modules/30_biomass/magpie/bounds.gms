@@ -107,8 +107,15 @@ if(cm_1stgen_phaseout=1,
 *** technologies present in 2005 are allowed to expand, but the resulting
 *** additional demand for biomass (exceeding the phase-out-trajectory) can then
 *** be supplied  from purpose-grown biomass.
-p30_maxprod_residue(ttot,regi)     = max(p30_datapebio(regi,"pebiolc","2","maxprod",ttot), sum(teBioPebiolc, pm_pedem_res(ttot,regi,teBioPebiolc)));
+
+* Define base value 
+p30_maxprod_residue(ttot,regi)     = sum(teBioPebiolc, pm_pedem_res(ttot,regi,teBioPebiolc));
+
+
+* Correct for values larger than 2030: 
+p30_maxprod_residue(ttot,regi)$(ttot.val ge 2030) = max(p30_datapebio(regi,"pebiolc","2","maxprod",ttot), sum(teBioPebiolc, pm_pedem_res(ttot,regi,teBioPebiolc)));
 vm_fuExtr.up(t,regi,"pebiolc","2") = p30_maxprod_residue(t,regi)*1.0001;
+vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val le 2025) = 1e-6;  
 *'
 
 ***-------------------------------------------------------------
