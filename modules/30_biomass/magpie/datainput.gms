@@ -79,38 +79,69 @@ loop(ttot$( (ttot.val = 2005) OR (ttot.val = 2010) ),
 );
 display i30_bioen_price_a, i30_bioen_price_b;
 
-parameter p30_limit_1stgen_total(tall,all_regi) "regional limit on total 1st generation biomass [PJ]";
-*** default: no binding limit for any region
+*** default: no binding limit on 1st generation biomass for any region
 p30_limit_1stgen_total(ttot,regi) = 1e10;
 
-$ifthen.bio "%cm_biomassSensitivity%" == "3"
-* Stable scenario
-  loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 105.0;
-    p30_limit_1stgen_total("2040",regi) = 105.0;
-    p30_limit_1stgen_total("2050",regi) = 105.0;
-  );
-$elseif.bio "%cm_biomassSensitivity%" == "2"
-* BAU scenario
-  loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 105.0;
-    p30_limit_1stgen_total("2040",regi) = 105.0;
-    p30_limit_1stgen_total("2050",regi) = 105.0;
-  );
-$elseif.bio "%cm_biomassSensitivity%" == "1"
-* Low scenario
-  loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 75.0;
-    p30_limit_1stgen_total("2040",regi) = 0.1;
-    p30_limit_1stgen_total("2050",regi) = 0.1;
-  );
-$elseif.bio "%cm_biomassSensitivity%" == "4"
-* High scenario
-  loop(regi$sameas(regi,"DEU"),
-    p30_limit_1stgen_total("2030",regi) = 80.0;
-    p30_limit_1stgen_total("2040",regi) = 70.0;
-    p30_limit_1stgen_total("2050",regi) = 70.0;
-  );
-$endif.bio
+*** -------------------------------------------------------------
+*** BioMIP biomass availability sensitivities for Germany (cm_bioMIP_bio)
+*** Source: sensitivities/BioMIP_BiomassSenstivity.xlsx, values in PJ/yr
+***   res:    woody + digestible residues                  -> pebiolc grade 2
+***   src:    short rotation coppice (2nd gen energy crop) -> pebiolc grade 1
+***   fstgen: 1st gen crops for biodiesel/bioethanol + oily residues -> pebios + pebioil
+*** 1st gen digestibles (energy crops for biogas) are not included yet, as the
+*** respective technology is not represented in REMIND.
+*** 2035 and 2045 are interpolated linearly, values are kept constant after 2050.
+*** -------------------------------------------------------------
+$ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
+p30_bioMIP_pot(ttot,bioMIPtype30) = 0;
+$ifthen.bioMIPscen "%cm_bioMIP_bio%" == "trends"
+*** Current Trends: phase down 1st gen, SRC expansion, residue mobilization 30/45/60%
+p30_bioMIP_pot("2030","res")    = 608.7;
+p30_bioMIP_pot("2040","res")    = 640.0;
+p30_bioMIP_pot("2050","res")    = 649.3;
+p30_bioMIP_pot("2030","src")    = 106.6;
+p30_bioMIP_pot("2040","src")    = 255.8;
+p30_bioMIP_pot("2050","src")    = 255.8;
+p30_bioMIP_pot("2030","fstgen") = 214.0;
+p30_bioMIP_pot("2040","fstgen") = 214.6;
+p30_bioMIP_pot("2050","fstgen") = 215.1;
+$elseif.bioMIPscen "%cm_bioMIP_bio%" == "frozen"
+*** Frozen World: constant 1st gen, no SRC, residue mobilization 30/45/60%
+p30_bioMIP_pot("2030","res")    = 608.7;
+p30_bioMIP_pot("2040","res")    = 640.0;
+p30_bioMIP_pot("2050","res")    = 649.3;
+p30_bioMIP_pot("2030","fstgen") = 189.8;
+p30_bioMIP_pot("2040","fstgen") = 190.4;
+p30_bioMIP_pot("2050","fstgen") = 190.9;
+$elseif.bioMIPscen "%cm_bioMIP_bio%" == "low"
+*** Low Biomass: energy crop phase-out by 2040, residue mobilization 10/20/30%
+p30_bioMIP_pot("2030","res")    = 600.4;
+p30_bioMIP_pot("2040","res")    = 623.5;
+p30_bioMIP_pot("2050","res")    = 630.1;
+p30_bioMIP_pot("2030","fstgen") = 147.0;
+p30_bioMIP_pot("2040","fstgen") =  19.3;
+p30_bioMIP_pot("2050","fstgen") =  19.6;
+$elseif.bioMIPscen "%cm_bioMIP_bio%" == "high"
+*** High Biomass: SRC expansion, residue mobilization 60/80/100%
+p30_bioMIP_pot("2030","res")    = 619.0;
+p30_bioMIP_pot("2040","res")    = 660.6;
+p30_bioMIP_pot("2050","res")    = 667.5;
+p30_bioMIP_pot("2030","src")    = 226.0;
+p30_bioMIP_pot("2040","src")    = 556.5;
+p30_bioMIP_pot("2050","src")    = 556.5;
+p30_bioMIP_pot("2030","fstgen") = 160.3;
+p30_bioMIP_pot("2040","fstgen") = 132.3;
+p30_bioMIP_pot("2050","fstgen") = 134.3;
+$endif.bioMIPscen
+
+*** interpolate 2035 and 2045, keep 2050 values constant afterwards
+p30_bioMIP_pot("2035",bioMIPtype30) = 0.5 * (p30_bioMIP_pot("2030",bioMIPtype30) + p30_bioMIP_pot("2040",bioMIPtype30));
+p30_bioMIP_pot("2045",bioMIPtype30) = 0.5 * (p30_bioMIP_pot("2040",bioMIPtype30) + p30_bioMIP_pot("2050",bioMIPtype30));
+p30_bioMIP_pot(ttot,bioMIPtype30)$(ttot.val gt 2050) = p30_bioMIP_pot("2050",bioMIPtype30);
+
+*** 1st generation limit for DEU, enforced by q30_limit_1stgen_total [PJ]
+p30_limit_1stgen_total(ttot,regi)$(sameas(regi,"DEU") AND ttot.val ge 2030) = p30_bioMIP_pot(ttot,"fstgen");
+display p30_bioMIP_pot, p30_limit_1stgen_total;
+$endif.bioMIP
 
 *** EOF ./modules/30_biomass/magpie/datainput.gms

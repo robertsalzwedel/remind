@@ -1595,6 +1595,24 @@ $setglobal cm_maxProdBiolc  off  !! def = off  !! regexp = off|is.nonnegative
 *** then the values from the region group disaggregation will be overwritten by this region-specific value.
 *** For example: "EU27_regi 7.5, DEU 1.5".
 $setGLobal cm_bioprod_regi_lim off  !! def off
+*** cm_bioMIP_bio "BioMIP biomass availability sensitivity for Germany (DEU)"
+*** sets upper bounds on DEU residues (pebiolc.2), short rotation coppice (pebiolc.1) and 1st generation
+*** feedstocks (pebios + pebioil) from 2030 onwards and phases out pebiolc imports to DEU from 2035 onwards.
+*** Data: sensitivities/BioMIP_BiomassSenstivity.xlsx, see modules/30_biomass/magpie/datainput.gms
+***  (off):    no BioMIP biomass bounds
+***  (trends): Current Trends - phase down of 1st generation, SRC expansion, medium residue mobilization
+***  (frozen): Frozen World - constant 1st generation, no SRC, medium residue mobilization
+***  (low):    Low Biomass - energy crop phase-out by 2040, low residue mobilization
+***  (high):   High Biomass - SRC expansion, high residue mobilization
+$setGlobal cm_bioMIP_bio  off  !! def = off  !! regexp = off|trends|frozen|low|high
+*** cm_bioMIP_GCS "BioMIP geological carbon storage sensitivity for Germany (DEU)"
+*** upper bound on total annual CO2 injection in DEU in 2030-2050, no BioMIP bound afterwards.
+*** Data: sensitivities/BioMIP_StorageSensitivity.xlsx, see modules/47_regipol/regiCarbonPrice/datainput.gms
+***  (off):  no BioMIP storage bound
+***  (low):  failure rate 90%, growth rate 10%  (15 MtCO2/yr in 2050)
+***  (med):  failure rate 85%, growth rate 15%  (50 MtCO2/yr in 2050)
+***  (high): failure rate 80%, growth rate 20%  (75 MtCO2/yr in 2050)
+$setGlobal cm_bioMIP_GCS  off  !! def = off  !! regexp = off|low|med|high
 *' cm_GDPpopScen  "assumptions about future GDP and population development"
 *'  * (SSP1):  SSP1 fastGROWTH medCONV
 *'  * (SSP2):  SSP2 medGROWTH medCONV

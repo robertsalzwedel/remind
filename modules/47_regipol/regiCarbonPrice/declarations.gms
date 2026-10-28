@@ -251,6 +251,18 @@ Equation
 $endIf.cm_CCSmaxBound
 
 ***---------------------------------------------------------------------------
+*** BioMIP geological carbon storage sensitivity for Germany:
+***---------------------------------------------------------------------------
+$ifthen.bioMIP_GCS not "%cm_bioMIP_GCS%" == "off"
+Parameter
+  p47_bioMIP_GCSmax(ttot) "BioMIP upper bound on total annual CO2 injection in DEU [MtCO2/yr]"
+;
+Equation
+  q47_bioMIP_GCSmax(ttot,all_regi) "BioMIP upper bound on total annual CO2 injection in DEU (on- and offshore)"
+;
+$endIf.bioMIP_GCS
+
+***---------------------------------------------------------------------------
 *** Exogenous CO2 tax level:
 ***---------------------------------------------------------------------------
 $ifThen.regiExoPrice not "%cm_regiExoPrice%" == "off"

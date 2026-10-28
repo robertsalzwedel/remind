@@ -22,6 +22,13 @@ peren2cont30(all_enty,rlf)   "map biomass energy to grades with continous supply
         pebiolc.1         "purpose grown"
 /
 
+bioMIPtype30                 "BioMIP biomass feedstock types for DEU sensitivities (cm_bioMIP_bio)"
+/
+        res               "woody and digestible residues (pebiolc.2)"
+        src               "short rotation coppice (pebiolc.1)"
+        fstgen            "1st generation crops for biodiesel and bioethanol, oily residues (pebios + pebioil)"
+/
+
 ;
 
 *** EOF ./modules/30_biomass/magpie/sets.gms

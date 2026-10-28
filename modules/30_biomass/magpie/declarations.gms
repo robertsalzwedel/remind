@@ -58,7 +58,10 @@ o_p30_pebiolc_price_emu_preloop(iteration,ttot,all_regi)         "track p30_pebi
 o_p30_pebiolc_price_emu_preloop_shifted(iteration,ttot,all_regi) "track p30_pebiolc_price_emu_preloop_shifted across Nash iterations"
 o_pm_pebiolc_costs_emu_preloop(iteration,ttot,all_regi)          "track p30_pebiolc_costs_emu_preloop across Nash iterations"
 o_v30_pebiolc_costs(iteration,ttot,all_regi)                     "track v30_pebiolc_costs across Nash iterations"
-* p30_limit_1stgen_total(ttot,all_regi) "regional limit on total 1st generation biomass (pebios + pebioil) extraction [TWa]"
+p30_limit_1stgen_total(ttot,all_regi)          "regional limit on total 1st generation biomass (pebios + pebioil) extraction [PJ/yr]"
+$ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
+p30_bioMIP_pot(ttot,bioMIPtype30)               "BioMIP biomass potentials for DEU by feedstock type [PJ/yr]"
+$endif.bioMIP
 ;
 
 variables
@@ -88,7 +91,9 @@ q30_costAdj(ttot,all_regi)         "Improve convergence penalizing deviations fr
 q30_limitTeBio(ttot,all_regi)      "Limit BECCS in policy runs relative to reference scenario"
 q30_BioPEProdTotal(ttot,all_regi)  "Calculate total domestic PE biomass production"
 q30_limitBiotrmod(ttot,all_regi)   "limit the total amount of modern biomass use for solids to the amount of coal use for solids"
+$ifthen.limit_1stgen_total not "%cm_bioMIP_bio%" == "off"
 q30_limit_1stgen_total(ttot,all_regi)  "limit total 1st generation biomass (pebios + pebioil) extraction [TWa]"
+$endif.limit_1stgen_total
 ;
 *** EOF ./modules/30_biomass/magpie/declarations.gms
     

@@ -132,8 +132,9 @@ q30_BioPEProdTotal(t,regi)..
           vm_fuExtr(t,regi,enty,rlf))
 ;
 
-$ifthen.limit_1stgen_total not %cm_biomassSensitivity% == 0
-q30_limit_1stgen_total(t,regi)$p30_limit_1stgen_total(t,regi)..
+*** limit on total 1st generation biomass, currently only used for BioMIP sensitivities (cm_bioMIP_bio)
+$ifthen.limit_1stgen_total not "%cm_bioMIP_bio%" == "off"
+q30_limit_1stgen_total(t,regi)$(p30_limit_1stgen_total(t,regi) lt 1e10)..
   sum(rlf, vm_fuExtr(t,regi,"pebios",rlf))
   + sum(rlf, vm_fuExtr(t,regi,"pebioil",rlf))
   =l=

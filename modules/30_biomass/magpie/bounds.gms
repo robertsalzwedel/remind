@@ -344,4 +344,21 @@ loop( ext_regi$(p30_bioprod_regi_lim(ext_regi)),
 );
 $ENDIF.bioprod_regi_lim
 
+*** -------------------------------------------------------------
+*' #### BioMIP biomass availability sensitivities for Germany
+*** -------------------------------------------------------------
+*** Bounds on DEU residues (pebiolc.2) and SRC (pebiolc.1) from 2030 onwards, see p30_bioMIP_pot in datainput.gms.
+*** The 1st generation limit (pebios + pebioil) is applied via q30_limit_1stgen_total.
+$ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
+loop(regi$sameas(regi,"DEU"),
+  vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2030) = max(1e-6, p30_bioMIP_pot(t,"res") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2030) = max(1e-6, p30_bioMIP_pot(t,"src") * sm_EJ_2_TWa / 1000);
+*** relax exogenous lower bounds on 1st generation feedstocks, such that q30_limit_1stgen_total can be met
+  vm_fuExtr.lo(t,regi,"pebios","5")$(t.val ge 2030)  = 0;
+  vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val ge 2030) = 0;
+*** phase out biomass imports to Germany from 2035 onwards (only pebiolc is traded)
+  vm_Mport.up(t,regi,"pebiolc")$(t.val ge 2035) = 1e-6;
+);
+$endif.bioMIP
+
 *** EOF ./modules/30_biomass/magpie/bounds.gms

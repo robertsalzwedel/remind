@@ -317,5 +317,30 @@ $offdelim
 
 $endif.exogDemScen
 
+*** BioMIP geological carbon storage sensitivity for Germany (cm_bioMIP_GCS) [MtCO2/yr]
+*** Source: sensitivities/BioMIP_StorageSensitivity.xlsx. 25 MtCO2/yr of announced projects in DEU for 2032,
+*** scenarios differ by failure rate and growth rate. No BioMIP bound after 2050.
+$ifthen.bioMIP_GCS "%cm_bioMIP_GCS%" == "low"
+*** failure rate 90%, growth rate 10%
+p47_bioMIP_GCSmax("2030") =  0.5;
+p47_bioMIP_GCSmax("2035") =  3.5;
+p47_bioMIP_GCSmax("2040") =  5.5;
+p47_bioMIP_GCSmax("2045") = 10;
+p47_bioMIP_GCSmax("2050") = 15;
+$elseif.bioMIP_GCS "%cm_bioMIP_GCS%" == "med"
+*** failure rate 85%, growth rate 15%
+p47_bioMIP_GCSmax("2030") =  1;
+p47_bioMIP_GCSmax("2035") =  6;
+p47_bioMIP_GCSmax("2040") = 14;
+p47_bioMIP_GCSmax("2045") = 30;
+p47_bioMIP_GCSmax("2050") = 50;
+$elseif.bioMIP_GCS "%cm_bioMIP_GCS%" == "high"
+*** failure rate 80%, growth rate 20%
+p47_bioMIP_GCSmax("2030") =  2;
+p47_bioMIP_GCSmax("2035") =  9;
+p47_bioMIP_GCSmax("2040") = 22;
+p47_bioMIP_GCSmax("2045") = 55;
+p47_bioMIP_GCSmax("2050") = 75;
+$endif.bioMIP_GCS
 
 *** EOF ./modules/47_regipol/regiCarbonPrice/datainput.gms

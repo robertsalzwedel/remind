@@ -138,6 +138,19 @@ q47_CCSmaxBound(t,regi)$p47_CCSmaxBound(regi)..
 $endIf.cm_CCSmaxBound
 
 ***---------------------------------------------------------------------------
+*' BioMIP: upper bound on total CO2 injection in Germany (sum over on- and offshore injection)
+***---------------------------------------------------------------------------
+$ifthen.bioMIP_GCS not "%cm_bioMIP_GCS%" == "off"
+
+q47_bioMIP_GCSmax(t,regi)$(sameAs(regi,"DEU") AND t.val ge 2030 AND t.val le 2050)..
+  sum(ccs2te(ccsCo2(enty),enty2,te), sum(teCCS2rlf(te,rlf),vm_co2CCS(t,regi,enty,enty2,te,rlf)))
+  =l=
+  p47_bioMIP_GCSmax(t) * sm_MtCO2_2_GtC
+;
+
+$endIf.bioMIP_GCS
+
+***---------------------------------------------------------------------------
 *' total SE generation per PE carrier (useful for setting historical bounds)
 ***---------------------------------------------------------------------------
 
