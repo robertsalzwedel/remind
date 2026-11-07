@@ -1615,9 +1615,10 @@ $setGlobal cm_bioMIP_bio  off  !! def = off  !! regexp = off|trends|frozen|low|h
 $setGlobal cm_bioMIP_GCS  off  !! def = off  !! regexp = off|low|med|high
 *** cm_bioMIP_ES "BioMIP exogenous land-use CO2 emissions (co2luc) for Germany (DEU)"
 *** overwrites pm_macBaseMagpie(t,"DEU","co2luc") after 2030, see core/presolve.gms
+*** values are before the Grassi shift (DEU: 0.0165 GtC/yr) is subtracted in the target accounting of 47_regipol
 ***  (off):     no change, use the MAgPIE baseline
-***  (netZero):  0.01 GtC/yr  (net-zero case)
-***  (netNeg): 0.005 GtC/yr (net-negative case)
+***  (netZero): 0.005 GtC/yr       (net-zero energy system case, stronger sink: approx. -42.2 MtCO2/yr accounted)
+***  (netNeg):  0.005 + 0.020/sm_c_2_co2 = 0.01045 GtC/yr (net-negative energy system case, sink 20 MtCO2/yr weaker: approx. -22.2 MtCO2/yr accounted)
 $setGlobal cm_bioMIP_ES  off  !! def = off  !! regexp = off|netZero|netNeg
 *' cm_GDPpopScen  "assumptions about future GDP and population development"
 *'  * (SSP1):  SSP1 fastGROWTH medCONV

@@ -210,10 +210,11 @@ display pm_macBaseMagpie;
 $ENDIF.scaleEmiHist
 
 *** BioMIP: exogenous DEU land-use CO2 emissions after 2030 [GtC/yr], see cm_bioMIP_ES in main.gms
+*** netNeg has a 20 MtCO2/yr weaker LULUCF sink than netZero
 $ifthen.bioMIP_ES "%cm_bioMIP_ES%" == "netZero"
-pm_macBaseMagpie(ttot,regi,"co2luc")$(ttot.val gt 2030 AND sameas(regi,"DEU")) = 0.01;
-$elseif.bioMIP_ES "%cm_bioMIP_ES%" == "netNeg"
 pm_macBaseMagpie(ttot,regi,"co2luc")$(ttot.val gt 2030 AND sameas(regi,"DEU")) = 0.005;
+$elseif.bioMIP_ES "%cm_bioMIP_ES%" == "netNeg"
+pm_macBaseMagpie(ttot,regi,"co2luc")$(ttot.val gt 2030 AND sameas(regi,"DEU")) = 0.005 + 0.020 / sm_c_2_co2;
 $endif.bioMIP_ES
 
 !! all net negative co2luc
