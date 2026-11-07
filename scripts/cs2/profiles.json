@@ -118,8 +118,13 @@
 		"sections": "0",
 		"userSectionPath": "normalizePath('./scripts/cs2/planetaryboundaries.Rmd')"
 	},
-	"mySection": {
+	"BioMIP": {
 		"sections": "0",
-		"userSectionPath": "normalizePath('./scripts/cs2/mySection.Rmd')"
+		"reg": "c('DEU', 'ECE', 'ECS', 'ENC', 'ESC', 'ESW', 'EU27', 'EWN', 'FRA')",
+		"yearsHist": "c(seq(2000, 2024, 1), seq(2025, 2050, 5))",
+		"yearsScen": "seq(2005, 2060, 5)",
+		"yearsBarPlot": "c(2020, 2030, 2040, 2045, 2050)",
+		"mainReg": "'DEU'",
+		"userSectionPath": "normalizePath('./scripts/cs2/BioMIP.Rmd')"
 	}
 }

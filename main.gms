@@ -1613,6 +1613,12 @@ $setGlobal cm_bioMIP_bio  off  !! def = off  !! regexp = off|trends|frozen|low|h
 ***  (med):  failure rate 85%, growth rate 15%  (50 MtCO2/yr in 2050)
 ***  (high): failure rate 80%, growth rate 20%  (75 MtCO2/yr in 2050)
 $setGlobal cm_bioMIP_GCS  off  !! def = off  !! regexp = off|low|med|high
+*** cm_bioMIP_ES "BioMIP exogenous land-use CO2 emissions (co2luc) for Germany (DEU)"
+*** overwrites pm_macBaseMagpie(t,"DEU","co2luc") after 2030, see core/presolve.gms
+***  (off):     no change, use the MAgPIE baseline
+***  (netZero):  0.01 GtC/yr  (net-zero case)
+***  (netNeg): 0.005 GtC/yr (net-negative case)
+$setGlobal cm_bioMIP_ES  off  !! def = off  !! regexp = off|netZero|netNeg
 *' cm_GDPpopScen  "assumptions about future GDP and population development"
 *'  * (SSP1):  SSP1 fastGROWTH medCONV
 *'  * (SSP2):  SSP2 medGROWTH medCONV

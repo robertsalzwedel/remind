@@ -139,8 +139,11 @@ p30_bioMIP_pot("2035",bioMIPtype30) = 0.5 * (p30_bioMIP_pot("2030",bioMIPtype30)
 p30_bioMIP_pot("2045",bioMIPtype30) = 0.5 * (p30_bioMIP_pot("2040",bioMIPtype30) + p30_bioMIP_pot("2050",bioMIPtype30));
 p30_bioMIP_pot(ttot,bioMIPtype30)$(ttot.val gt 2050) = p30_bioMIP_pot("2050",bioMIPtype30);
 
+* p30_bioMIP_pot(ttot,bioMIPtype30) = 1.5 * p30_bioMIP_pot(ttot,bioMIPtype30); 
+
+
 *** 1st generation limit for DEU, enforced by q30_limit_1stgen_total [PJ]
-p30_limit_1stgen_total(ttot,regi)$(sameas(regi,"DEU") AND ttot.val ge 2030) = p30_bioMIP_pot(ttot,"fstgen");
+p30_limit_1stgen_total(ttot,regi)$(sameas(regi,"DEU") AND ttot.val ge 2040) = p30_bioMIP_pot(ttot,"fstgen");
 display p30_bioMIP_pot, p30_limit_1stgen_total;
 $endif.bioMIP
 

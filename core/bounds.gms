@@ -443,7 +443,7 @@ vm_capEarlyReti.up(t,regi,teEarlyReti) = 1;
 $ifthen.tech_earlyreti not "%c_tech_earlyreti_rate%" == "off"
 *' allow early retirement also for technology and region combinations as defined by c_tech_earlyreti_rate switch
 loop((ext_regi,te) $ p_techEarlyRetiRate(ext_regi,te),
-  vm_capEarlyReti.up(t,regi,te) $ (regi_group(ext_regi,regi)) = 1;
+  vm_capEarlyReti.up(t,regi,te) $ (regi_groupExt(ext_regi,regi)) = 1;
 );
 $endif.tech_earlyreti
 
@@ -452,7 +452,7 @@ vm_capEarlyReti.up(ttot,regi,te) $ (ttot.val < 2010 or ttot.val > 2110) = 0;
 
 *** only US and EUR allow early retirement before 2035
 loop(regi$(NOT(regi_group("USA_regi",regi) or regi_group("EUR_regi",regi))),
-  vm_capEarlyReti.up(t,regi,te) $ (t.val <= 2030) = 0;
+  vm_capEarlyReti.up(t,regi,te) $ (t.val <= 2025) = 0;
 );
 
 *** lower bound of 0.01% to help the model to be aware of the early retirement option is time steps where it is active

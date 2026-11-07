@@ -209,6 +209,13 @@ p_macBaseExo(ttot,regi,"n2oagwaste")$((ttot.val ge 2005) AND p_aux_scaleEmiHisto
 display pm_macBaseMagpie;
 $ENDIF.scaleEmiHist
 
+*** BioMIP: exogenous DEU land-use CO2 emissions after 2030 [GtC/yr], see cm_bioMIP_ES in main.gms
+$ifthen.bioMIP_ES "%cm_bioMIP_ES%" == "netZero"
+pm_macBaseMagpie(ttot,regi,"co2luc")$(ttot.val gt 2030 AND sameas(regi,"DEU")) = 0.01;
+$elseif.bioMIP_ES "%cm_bioMIP_ES%" == "netNeg"
+pm_macBaseMagpie(ttot,regi,"co2luc")$(ttot.val gt 2030 AND sameas(regi,"DEU")) = 0.005;
+$endif.bioMIP_ES
+
 !! all net negative co2luc
 p_macBaseMagpieNegCo2(t,regi) = pm_macBaseMagpie(t,regi,"co2luc")$(pm_macBaseMagpie(t,regi,"co2luc") < 0);
 
