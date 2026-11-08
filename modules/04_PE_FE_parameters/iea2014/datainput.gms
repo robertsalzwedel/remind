@@ -8,9 +8,11 @@
 
 parameter f04_IO_input(tall,all_regi,all_enty,all_enty,all_te) "Energy input based on IEA data"
 /
+$offlisting
 $ondelim
 $include "./modules/04_PE_FE_parameters/iea2014/input/f04_IO_input.cs4r"
 $offdelim
+$onlisting
 /
 ;
 
@@ -40,9 +42,11 @@ f04_IO_input(tall,regi,entyPe,entySe,te)$(f04_IO_input(tall,regi,entyPe,entySe,t
 *** This facilitates comparison with other sources which usually report gross electricity generation as well as gross capacity factors
 parameter f04_IO_output(tall,all_regi,all_enty,all_enty,all_te) "Energy output based on IEA data"
 /
+$offlisting
 $ondelim
 $include "./modules/04_PE_FE_parameters/iea2014/input/f04_IO_output.cs4r"
 $offdelim
+$onlisting
 /
 ;
 
@@ -295,6 +299,13 @@ p04_prodCoupleGlob("pebiolc","seel","biochp","sehe")        = 0.72;
 p04_prodCoupleGlob("pebiolc","segabio","biogasc","seel")    = -0.07;
 p04_prodCoupleGlob("pebiolc","seliqbio","bioethl","seel")   = 0.153;
 
+*** usable heat per unit of electricity: 0.44 thermal efficiency * 45% externally used heat / 0.41 electrical efficiency
+*** IEE/DBFZ/ESE (2025), EEG-Evaluationsbericht, Tab. 6-1
+p04_prodCoupleGlob("pemanure","seel","biodigestCHP","sehe")   = 0.1;
+*** auxiliary electricity per unit of biomethane: digester 2.3% of biogas output * 1.22 + upgrading 1.9% of biogas input
+*** Danish Energy Agency, Technology Data for Renewable Fuels (08/2026), sheets 81 and 91
+p04_prodCoupleGlob("pemanure","segabio","biodigestGAS","seel") = -0.048;
+
 *** Electricity co-production for this Fischer-Tropsch-based biomass-to-liquids route. Values taken from:
 *** - Liu et al. 2011 (Making Fischer-Tropsch Fuels and Electricity from Coal and Biomass: Performance and Cost Analysis) https://doi.org/10.1021/ef101184e
 *** broadly in line with the other studies:
@@ -375,6 +386,13 @@ loop(teChp(te),
     );
   );
 );
+
+*** RoSa: coupled heat of biodigestCHP: one global value for all regions (p04_prodCoupleGlob = 0.1), set after the
+*** IEA-based regional values and the 0.9 default above so that it is not overwritten.
+*** sehe is heat sold via networks; most heat of on-site biogas CHP is used locally and does not enter sehe.
+pm_prodCouple(regi,"pemanure","seel","biodigestCHP","sehe") = p04_prodCoupleGlob("pemanure","seel","biodigestCHP","sehe");
+*** no district heat sector in SSA (q_balSe is an equality for sehe), so no coupled heat
+pm_prodCouple(regi,"pemanure","seel","biodigestCHP","sehe")$(sameas(regi,"SSA")) = 0;
 
 display pm_prodCouple;
 

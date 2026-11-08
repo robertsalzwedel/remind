@@ -25,14 +25,37 @@ $offdelim
 *** and for pebios, pebioil (defined only for 5th grade)
 p30_datapebio(regi,"pebios","5","cost",ttot)$(ttot.val ge 2005)  = 12.4 * s30_D2TD / sm_GJ_2_TWa;
 p30_datapebio(regi,"pebioil","5","cost",ttot)$(ttot.val ge 2005) = 15.8 * s30_D2TD / sm_GJ_2_TWa;
+*** pemanure (raw biogas energy): feedstock is 50-60% of biogas LCOE (IEE/DBFZ/ESE 2025, 2026);
+*** 0.55 * 34.6 ct/kWh_el * 0.41 = 7.8 ct/kWh_biogas ~ 21.7 EUR2026/GJ ~ 18.4 USD2015/GJ ~ 19 USD2017/GJ
+p30_datapebio(regi,"pemanure","5","cost",ttot)$(ttot.val ge 2005) = 5 * s30_D2TD / sm_GJ_2_TWa;
 p30_datapebio(regi,"pebiolc","2","cost",ttot)$(ttot.val ge 2005) =    1 * s30_D2TD / sm_GJ_2_TWa;
 
 *** maxprod pebiolc: choose SSP and convert from PJ/yr to TWa/yr
 p30_datapebio(regi,"pebiolc","2","maxprod",ttot)$(ttot.val ge 2005) = p30_biolcResidues(ttot,regi,"%cm_LU_emi_scen%") * sm_EJ_2_TWa / 1000;
 
 *** maxprod 1st gen: use regional maxprod data from MAgPIE for 1st generation energy carriers (pebios, pebioil)
+*** RoSa: The last one should be pretending that there is 500 PJ of Manure available in each region. This should be set explicitly for Germany based on Input from BENOPT or input from MAgPIE. CAUTION: IEA might define biogas, so output of digestors rather than input.  
 p30_datapebio(regi,"pebios","5","maxprod",ttot)$(ttot.val ge 2005) = p30_bio1stgen(ttot,regi,"pebios") * sm_EJ_2_TWa / 1000;
 p30_datapebio(regi,"pebioil","5","maxprod",ttot)$(ttot.val ge 2005) = p30_bio1stgen(ttot,regi,"pebioil") * sm_EJ_2_TWa / 1000;
+* p30_datapebio(regi,"pemanure","5","maxprod",ttot)$(ttot.val ge 2005) = 500 * sm_EJ_2_TWa / 1000;  
+
+*** manure availability: historic values 2005-2020, 2022 values from 2025 onward
+p30_datapebio(regi,"pemanure","5","maxprod",ttot)$(ttot.val ge 2005 AND ttot.val le 2020) =
+  sum((all_enty,all_te)$(sameas(all_enty,"seel") OR sameas(all_enty,"segabio")),
+    1.2*f04_IO_input(ttot,regi,"pemanure",all_enty,all_te)
+  );
+
+p30_datapebio(regi,"pemanure","5","maxprod",ttot)$(ttot.val ge 2025) =
+  sum((all_enty,all_te)$(sameas(all_enty,"seel") OR sameas(all_enty,"segabio")),
+    1.2 * f04_IO_input("2020",regi,"pemanure",all_enty,all_te)
+  );
+
+* RoSa: potentially reduce this to the near future and make other assumptions for the future. For now, we assume that the availability of manure is constant after 2020.
+loop(ttot$(ttot.val gt 2005),
+  p30_datapebio(regi,"pemanure","5","maxprod",ttot) = max(p30_datapebio(regi,"pemanure","5","maxprod",ttot),
+                                                          p30_datapebio(regi,"pemanure","5","maxprod",ttot-1));
+);
+
 display p30_datapebio;
 
 p30_pebiolc_pricemag(ttot,regi) = 0;
@@ -41,9 +64,11 @@ p30_pebiolc_pricemag(ttot,regi) = 0;
 *** Read production of ligno-cellulosic purpose grown bioenergy from look-up table (used to calculate bioenergy costs in standalone runs and substract them from budget equation)
 parameter p30_biolcProductionLookup(tall,all_regi,all_LU_emi_scen,all_rcp_scen)  "regional production of pebiolc purpose grown"
 /
+$offlisting
 $ondelim
 $include "./modules/30_biomass/magpie/input/p30_biolcProductionLookup.cs4r"
 $offdelim
+$onlisting
 /
 ;
 
@@ -54,9 +79,11 @@ pm_pebiolc_demandmag(ttot,regi) = p30_biolcProductionLookup(ttot,regi,"%cm_LU_em
 *** Read parameters for bioenergy supply curve
 parameter f30_bioen_price(tall,all_regi,all_LU_emi_scen,all_rcp_scen,all_charScen)  "time dependent fit coefficients for bioenergy price formula"
 /
+$offlisting
 $ondelim
 $include "./modules/30_biomass/magpie/input/f30_bioen_price.cs4r"
 $offdelim
+$onlisting
 /
 ;
 

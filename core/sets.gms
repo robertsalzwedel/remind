@@ -175,6 +175,8 @@ all_te          "all energy technologies, including from modules"
     bioethl         "biomass to ethanol"
     bioeths         "sugar and starch biomass to ethanol"
     biodiesel       "oil biomass to biodiesel"
+    biodigestCHP    "anaerobic digestion for CHP"
+    biodigestGAS "anaerobic digestion and upgrading to biomethane"
     biopyronly      "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe        "biomass pyrolysis to biochar plus heat (established industrial)"
     biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"   
@@ -193,7 +195,6 @@ all_te          "all energy technologies, including from modules"
     fnrs            "fast nuclear reactor (simple structure)"
     elh2            "hydrogen electrolysis, using grid electricity"
     h2turb          "hydrogen turbine for electricity production"
-    elh2VRE         "dummy technology: hydrogen electrolysis; to demonstrate the capacities and SE flows inside the storXXX technologies"
     h2turbVRE       "dummy technology: hydrogen turbine for electricity production; to demonstrate the capacities and SE flows inside the storXXX technologies"
     h2curt          "hydrogen production from curtailment"
     h22ch4          "production of synthetic methane from hydrogen and captured carbon via methanation"
@@ -336,6 +337,7 @@ all_enty             "all types of quantities"
     pebiolc      "PE biomass lignocellulosic"
     pebios       "PE biomass sugar and starch"
     pebioil      "PE biomass sunflowers, palm oil, etc"
+    pemanure     "PE manure"
 
     all_seso     "all to SE solids"
     sesofos      "SE solids from fossil PE"
@@ -472,7 +474,6 @@ all_enty             "all types of quantities"
     peog         "aggregated oil and gas, only relevant for calibration because IEA only provides aggregated data"
     bfco2        "CO2 emission from blast furnace"
     
-*** outdated entries, still used in module 04 until structuremappings are fixed
     fesoi        "industry use of solid energy carriers"
     fehoi        "industry use of liquid energy carriers"
     fegai        "industry use of gaseous energy carriers"
@@ -974,17 +975,6 @@ sets
     "construction",
     "planned"
   /
-  NDC_version "NDC data version for NDC realizations of 40_techpol and 45_carbonprice"
-  /
-    2018_cond, 2018_uncond,
-    2021_cond, 2021_uncond,
-    2022_cond, 2022_uncond,
-    2023_cond, 2023_uncond,
-    2024_cond, 2024_uncond,
-    2025_cond, 2025_uncond,
-    2025_cond_extrapol, 2025_uncond_extrapol,
-    2026_cond, 2026_uncond
-  /
   NPi_version "NPi data version for NPi realizations of 40_techpol and 45_carbonprice"
   /
     2025_cond, 2025_uncond
@@ -1118,6 +1108,8 @@ te(all_te)              "energy technologies"
     bioethl         "biomass to ethanol"
     bioeths         "sugar and starch biomass to ethanol"
     biodiesel       "oil biomass to biodiesel"
+    biodigestCHP    "anaerobic digestion for CHP"
+    biodigestGAS "anaerobic digestion and upgrading to biomethane"
     biopyronly      "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe        "biomass pyrolysis to biochar plus heat (established industrial)"
     biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"   
@@ -1136,7 +1128,6 @@ te(all_te)              "energy technologies"
     fnrs            "fast nuclear reactor (simple structure)"
     elh2            "hydrogen electrolysis"
     h2turb          "hydrogen turbine for electricity production"
-    elh2VRE         "dummy technology: hydrogen electrolysis; to demonstrate the capacities and SE flows inside the storXXX technologies"
     h2turbVRE       "dummy technology: hydrogen turbine for electricity production; to demonstrate the capacities and SE flows inside the storXXX technologies"
     h2curt          "hydrogen production from curtailment"
     tdels           "transmission and distribution for electricity to stationary users"
@@ -1236,6 +1227,8 @@ teAdj(all_te)           "technologies with adjustment costs on capacity addition
     bioethl         "biomass to ethanol"
     bioeths         "sugar and starch biomass to ethanol"
     biodiesel       "oil biomass to biodiesel"
+    biodigestCHP    "anaerobic digestion for CHP"
+    biodigestGAS "anaerobic digestion and upgrading to biomethane"
     biopyronly      "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe        "biomass pyrolysis to biochar plus heat (established industrial)"
     biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"   
@@ -1398,6 +1391,8 @@ teBio(all_te)      "biomass energy systems technologies"
     bioethl     "biomass to ethanol"
     bioeths     "sugar and starch biomass to ethanol"
     biodiesel   "oil biomass to biodiesel"
+    biodigestCHP    "anaerobic digestion for CHP"
+    biodigestGAS "anaerobic digestion and upgrading to biomethane"
     biopyronly  "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe    "biomass pyrolysis to biochar plus heat (established industrial)"
     biopyrchp   "biomass pyrolysis to biochar plus heat and power (established industrial)"   
@@ -1429,6 +1424,8 @@ teRe(all_te)     "renewable technologies including biomass"
     bioethl     "biomass to ethanol"
     bioeths     "sugar and starch biomass to ethanol"
     biodiesel   "oil biomass to biodiesel"
+    biodigestCHP    "anaerobic digestion for CHP"
+    biodigestGAS "anaerobic digestion and upgrading to biomethane"
     biopyronly  "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe    "biomass pyrolysis to biochar plus heat (established industrial)"
     biopyrchp   "biomass pyrolysis to biochar plus heat and power (established industrial)"   
@@ -1633,6 +1630,7 @@ enty(all_enty)       "all types of quantities"
     pesol        "primary energy solar"
     pebiolc      "primary energy biomass lignocellulosic"
     pebios       "primary energy biomass sugar and starch"
+    pemanure     "PE manure"
     pebioil      "primary energy biomass sunflowers, palm oil, etc"
     seliqbio     "secondary energy liquids from biomass (ex. ethanol)"
     seliqfos     "secondary energy liquids from fossil primary energy (ex. petrol and diesel)"
@@ -1731,12 +1729,14 @@ entyPe(all_enty)      "Primary energy types (PE)"
     pesol        "PE solar"
     pebiolc      "PE biomass lignocellulosic"
     pebios       "PE biomass sugar and starch"
+    pemanure     "PE manure"
     pebioil      "PE biomass sunflowers, palm oil, etc"
 /
 peBio(all_enty)      "biomass primary energy types"
 /
     pebiolc      "PE biomass lignocellulosic"
     pebios       "PE biomass sugar and starch"
+    pemanure     "PE manure"
     pebioil      "PE biomass sunflowers, palm oil, etc"
 /
 peRe(all_enty)    "Renewable primary energy sources"
@@ -1747,6 +1747,7 @@ peRe(all_enty)    "Renewable primary energy sources"
     pesol        "PE solar"
     pebiolc      "PE biomass lignocellulosic"
     pebios       "PE biomass sugar and starch"
+    pemanure     "PE manure"
     pebioil      "PE biomass sunflowers, palm oil, etc"
 /
 peFos(all_enty)      "primary energy fossil fuels"
@@ -2191,8 +2192,8 @@ numberEmiRCP "number of emission types" / 1 * 23 /
 char            "characteristics of technologies"
 /
     mix0            "share in the production of v*_INIdemEn0, which is the energy demand in t0 minus the energy produced by couple production"
-    ccap0           "cumulated installed capacity in t0. Unit: TW"
-    inco0           "investment costs in t0. Unit: $/kW"
+    inco0           "investment costs at inco0year. Unit: $/kW"
+    inco0year       "year where inco0 holds"
     inco0_d         "Initial investment costs given in $(2015)/kW(output) capacity. Per 1000km."
     incolearn       "Investment costs that can be reduced through learning = inco0 - floorcost. Unit: $/kW"
     floorcost       "Floor investment costs for learning technologies. Unit: $/kW"
@@ -2230,7 +2231,7 @@ char            "characteristics of technologies"
     tkpremused      "turn-key cost premium used in the model (with a discount rate of 3+ pure rate of time preference); in comparison to overnight costs)"
     lifetime        "average lifetime of a technology (integral under the omeg-curve). Unit: years"
     flexibility                        "representing ramping constraints or additional costs for partial load of technologies in power sector"
-    tech_stat       "technology status: how close a technology is to market readiness. Scale: 0-3, with 0 'I can go out and build a GW plant today' to 3 'Still some research necessary'"
+    tech_stat       "technology status: how close a technology is to market readiness. Scale: 0-5, with 0 'I can go out and build a GW plant today' to 3 'Still some research necessary' to 5 'Further in the future'"
     Xport           "exports"
     Mport           "imports"
     use             "financial trade costs for PE use [trl$US per TWa]"
@@ -2239,7 +2240,7 @@ char            "characteristics of technologies"
     min             "minimum"
     max             "maximum"
     usehr            "number of hours in a year when the technology is used"
-    elh2VREcapRatio    "ratio of elh2VRE capacity to storage technology capacity"
+    elh2capRatio    "ratio of elh2 capacity to storage technology capacity"
     h2turbVREcapRatio  "ratio of h2turbVRE capacity to storage technology capacity"
     batteryVREcapRatio  "ratio of battery capacity to storage technology capacity"
     priceLow        "biochar price path assumption"
@@ -2398,6 +2399,8 @@ pe2se(all_enty,all_enty,all_te) "map primary energy carriers to secondary"
     pebiolc.seliqbio.bioftrec
     pebiolc.seliqbio.bioftcrec
     pebioil.seliqbio.biodiesel
+    pemanure.seel.biodigestCHP
+    pemanure.segabio.biodigestGAS
     pebios.seliqbio.bioeths
     pebiolc.seliqbio.bioethl
     peoil.seel.dot
@@ -2499,7 +2502,6 @@ se2se(all_enty,all_enty,all_te)  "map secondary energy to secondary energy using
 /
     seel.seh2.elh2
     seh2.seel.h2turb
-    seel.seh2.elh2VRE
     seh2.seel.h2turbVRE
 /
 
@@ -2555,7 +2557,9 @@ pc2te(all_enty,all_enty,all_te,all_enty)    "mapping for own consumption of tech
     pecoal.seh2.coalh2.seel
     pecoal.seh2.coalh2c.seel
     pebiolc.seel.biochp.sehe
+    pemanure.seel.biodigestCHP.sehe
     pebiolc.segabio.biogasc.seel
+    pemanure.segabio.biodigestGAS.seel
     segabio.fegas.tdbiogas.seel
     segafos.fegas.tdfosgas.seel
     pegeo.sehe.geohe.seel
@@ -2646,11 +2650,17 @@ emi2te(all_enty,all_enty,all_te,all_enty)    " map emissions to technologies"
     pebiolc.seliqbio.bioethl.bc
     pebios.seliqbio.bioeths.bc
     pebioil.seliqbio.biodiesel.bc
+    pemanure.seel.biodigestCHP.bc
+    pemanure.segabio.biodigestGAS.bc
     pebiolc.seliqbio.bioethl.oc
     pebios.seliqbio.bioeths.oc
     pebioil.seliqbio.biodiesel.oc
+    pemanure.seel.biodigestCHP.oc
+    pemanure.segabio.biodigestGAS.oc
     pebiolc.seh2.bioh2c.n2o
     pebiolc.seel.biochp.n2o
+    pemanure.seel.biodigestCHP.n2o
+    pemanure.segabio.biodigestGAS.n2o
     pebiolc.sehe.biohp.n2o
     pebiolc.sesobio.biotr.n2o
     pebiolc.sesobio.biotrmod.n2o
@@ -2799,6 +2809,7 @@ pe2rlf(all_enty,rlf)     "map exhaustible energy to grades for qm_fuel2pe"
     pebiolc.(1*2)
     pebios.(5)
     pebioil.(5)
+    pemanure.(5)
     (peur,pegeo,pehyd,pewin,pesol).1
 /
 
@@ -2829,7 +2840,7 @@ teSe2rlf(all_te,rlf)        "mapping for techologies to grades. Currently, the i
     igcc,igccc,pc,coaltr,coalgas,coalh2,coalh2c,coalchp,coalhp,coalftrec,coalftcrec,
     biotr,biotrmod,biogas,biogasc,bioftrec,bioftcrec,bioh2,bioh2c,biohp,biochp,bioigcc,bioigccc,
     biopyronly,biopyrhe,biopyrchp,biopyrliq,
-    elh2,h2turb,elh2VRE,h2turbVRE,bioethl,bioeths,biodiesel,tnrs,fnrs
+    elh2,h2turb,h2turbVRE,bioethl,bioeths,biodiesel,biodigestCHP,biodigestGAS,tnrs,fnrs
     ) . 1
 /
 
