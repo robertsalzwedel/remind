@@ -111,54 +111,59 @@ p30_limit_1stgen_total(ttot,regi) = 1e10;
 
 *** -------------------------------------------------------------
 *** BioMIP biomass availability sensitivities for Germany (cm_bioMIP_bio)
-*** Source: sensitivities/BioMIP_BiomassSenstivity.xlsx, values in PJ/yr
-***   res:    woody + digestible residues                  -> pebiolc grade 2
-***   src:    short rotation coppice (2nd gen energy crop) -> pebiolc grade 1
-***   fstgen: 1st gen crops for biodiesel/bioethanol + oily residues -> pebios + pebioil
-*** 1st gen digestibles (energy crops for biogas) are not included yet, as the
-*** respective technology is not represented in REMIND.
+*** Source: sensitivities/BioMIP BiomassSensitivityUpdated.xlsx, values in PJ/yr
+***   res:        woody residues                                   -> pebiolc grade 2
+***   src:        short rotation coppice (2nd gen energy crop)     -> pebiolc grade 1
+***   fstgen:     1st gen crops for biodiesel/bioethanol + oily residues -> pebios + pebioil
+***   digestible: digestible residues + 1st gen digestibles        -> pebiogas grade 5
+*** Sums are written as (1st gen for biodiesel/bioethanol + oily) and (digestible residues + 1st gen digestibles).
+*** Spreadsheet values are taken as energy content of pebiogas (raw biogas, IEA convention), to be revisited.
 *** 2035 and 2045 are interpolated linearly, values are kept constant after 2050.
 *** -------------------------------------------------------------
 $ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
 p30_bioMIP_pot(ttot,bioMIPtype30) = 0;
+*** woody residues are the same in all scenarios
+p30_bioMIP_pot("2030","res") = 529.84;
+p30_bioMIP_pot("2040","res") = 529.84;
+p30_bioMIP_pot("2050","res") = 529.84;
 $ifthen.bioMIPscen "%cm_bioMIP_bio%" == "trends"
 *** Current Trends: phase down 1st gen, SRC expansion, residue mobilization 30/45/60%
-p30_bioMIP_pot("2030","res")    = 608.7;
-p30_bioMIP_pot("2040","res")    = 640.0;
-p30_bioMIP_pot("2050","res")    = 649.3;
-p30_bioMIP_pot("2030","src")    = 106.6;
-p30_bioMIP_pot("2040","src")    = 255.8;
-p30_bioMIP_pot("2050","src")    = 255.8;
-p30_bioMIP_pot("2030","fstgen") = 214.0;
-p30_bioMIP_pot("2040","fstgen") = 214.6;
-p30_bioMIP_pot("2050","fstgen") = 215.1;
+p30_bioMIP_pot("2030","src")        =  88.0;
+p30_bioMIP_pot("2040","src")        = 211.2;
+p30_bioMIP_pot("2050","src")        = 211.2;
+p30_bioMIP_pot("2030","fstgen")     = 194.33 + 19.75;
+p30_bioMIP_pot("2040","fstgen")     = 194.33 + 20.11;
+p30_bioMIP_pot("2050","fstgen")     = 194.33 + 20.84;
+p30_bioMIP_pot("2030","digestible") =  78.85 + 204.0;
+p30_bioMIP_pot("2040","digestible") = 110.22 + 144.5;
+p30_bioMIP_pot("2050","digestible") = 119.49 + 156.4;
 $elseif.bioMIPscen "%cm_bioMIP_bio%" == "frozen"
 *** Frozen World: constant 1st gen, no SRC, residue mobilization 30/45/60%
-p30_bioMIP_pot("2030","res")    = 608.7;
-p30_bioMIP_pot("2040","res")    = 640.0;
-p30_bioMIP_pot("2050","res")    = 649.3;
-p30_bioMIP_pot("2030","fstgen") = 189.8;
-p30_bioMIP_pot("2040","fstgen") = 190.4;
-p30_bioMIP_pot("2050","fstgen") = 190.9;
+p30_bioMIP_pot("2030","fstgen")     = 170.1 + 19.67;
+p30_bioMIP_pot("2040","fstgen")     = 170.1 + 20.26;
+p30_bioMIP_pot("2050","fstgen")     = 170.1 + 20.84;
+p30_bioMIP_pot("2030","digestible") =  78.85 + 340.0;
+p30_bioMIP_pot("2040","digestible") = 110.22 + 340.0;
+p30_bioMIP_pot("2050","digestible") = 119.49 + 340.0;
 $elseif.bioMIPscen "%cm_bioMIP_bio%" == "low"
 *** Low Biomass: energy crop phase-out by 2040, residue mobilization 10/20/30%
-p30_bioMIP_pot("2030","res")    = 600.4;
-p30_bioMIP_pot("2040","res")    = 623.5;
-p30_bioMIP_pot("2050","res")    = 630.1;
-p30_bioMIP_pot("2030","fstgen") = 147.0;
-p30_bioMIP_pot("2040","fstgen") =  19.3;
-p30_bioMIP_pot("2050","fstgen") =  19.6;
+p30_bioMIP_pot("2030","fstgen")     = 128.1 + 18.87;
+p30_bioMIP_pot("2040","fstgen")     =   0.0 + 19.27;
+p30_bioMIP_pot("2050","fstgen")     =   0.0 + 19.64;
+p30_bioMIP_pot("2030","digestible") =  70.59 + 255.0;
+p30_bioMIP_pot("2040","digestible") =  93.70 +   0.0;
+p30_bioMIP_pot("2050","digestible") = 100.29 +   0.0;
 $elseif.bioMIPscen "%cm_bioMIP_bio%" == "high"
 *** High Biomass: SRC expansion, residue mobilization 60/80/100%
-p30_bioMIP_pot("2030","res")    = 619.0;
-p30_bioMIP_pot("2040","res")    = 660.6;
-p30_bioMIP_pot("2050","res")    = 667.5;
-p30_bioMIP_pot("2030","src")    = 226.0;
-p30_bioMIP_pot("2040","src")    = 556.5;
-p30_bioMIP_pot("2050","src")    = 556.5;
-p30_bioMIP_pot("2030","fstgen") = 160.3;
-p30_bioMIP_pot("2040","fstgen") = 132.3;
-p30_bioMIP_pot("2050","fstgen") = 134.3;
+p30_bioMIP_pot("2030","src")        = 186.56;
+p30_bioMIP_pot("2040","src")        = 459.36;
+p30_bioMIP_pot("2050","src")        = 459.36;
+p30_bioMIP_pot("2030","fstgen")     = 136.5 + 23.77;
+p30_bioMIP_pot("2040","fstgen")     = 105.0 + 27.32;
+p30_bioMIP_pot("2050","fstgen")     = 105.0 + 29.26;
+p30_bioMIP_pot("2030","digestible") =  89.16 + 255.0;
+p30_bioMIP_pot("2040","digestible") = 130.85 + 170.0;
+p30_bioMIP_pot("2050","digestible") = 137.69 + 170.0;
 $endif.bioMIPscen
 
 *** interpolate 2035 and 2045, keep 2050 values constant afterwards

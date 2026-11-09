@@ -126,12 +126,13 @@ vm_fuExtr.up(t,regi,"pebiogas","5") = p30_datapebio(regi,"pebiogas","5","maxprod
 loop(regi$sameas(regi,"DEU"),
 *** Manure bounds
     vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val le 2025) = 0.39 * sm_EJ_2_TWa;
-    vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2030) = 0.35 * sm_EJ_2_TWa;
-    vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2040) = 0.3 * sm_EJ_2_TWa;
+*** bounds from 2030 onwards replaced by BioMIP bounds (cm_bioMIP_bio), see end of this file
+*    vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2030) = 0.35 * sm_EJ_2_TWa;
+*    vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2040) = 0.3 * sm_EJ_2_TWa;
 *** Residue bounds
-    vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2030) = 0.60 * sm_EJ_2_TWa;
+*    vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2030) = 0.60 * sm_EJ_2_TWa;
 *** 2nd generation bounds
-    vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2030) = 0.5 * sm_EJ_2_TWa;
+*    vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2030) = 0.5 * sm_EJ_2_TWa;
 );
 
 *'
@@ -363,12 +364,14 @@ $ENDIF.bioprod_regi_lim
 *** -------------------------------------------------------------
 *' #### BioMIP biomass availability sensitivities for Germany
 *** -------------------------------------------------------------
-*** Bounds on DEU residues (pebiolc.2) and SRC (pebiolc.1) from 2030 onwards, see p30_bioMIP_pot in datainput.gms.
+*** Bounds on DEU woody residues (pebiolc.2), SRC (pebiolc.1) and digestibles (pebiogas.5) from 2030 onwards, (changed to 2030 to avoid infeasibilities in 2030)
+*** see p30_bioMIP_pot in datainput.gms.
 *** The 1st generation limit (pebios + pebioil) is applied via q30_limit_1stgen_total.
 $ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
 loop(regi$sameas(regi,"DEU"),
-  vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2035) = max(1e-6, p30_bioMIP_pot(t,"res") * sm_EJ_2_TWa / 1000);
-  vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2035) = max(1e-6, p30_bioMIP_pot(t,"src") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2035)  = max(1e-6, p30_bioMIP_pot(t,"res") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2035)  = max(1e-6, p30_bioMIP_pot(t,"src") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2035) = max(1e-6, p30_bioMIP_pot(t,"digestible") * sm_EJ_2_TWa / 1000);
 *** relax exogenous lower bounds on 1st generation feedstocks, such that q30_limit_1stgen_total can be met
   vm_fuExtr.lo(t,regi,"pebios","5")$(t.val ge 2030)  = 0;
   vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val ge 2030) = 0;

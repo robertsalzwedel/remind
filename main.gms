@@ -1577,9 +1577,9 @@ $setglobal cm_maxProdBiolc  off  !! def = off  !! regexp = off|is.nonnegative
 *** For example: "EU27_regi 7.5, DEU 1.5".
 $setGLobal cm_bioprod_regi_lim off  !! def off
 *** cm_bioMIP_bio "BioMIP biomass availability sensitivity for Germany (DEU)"
-*** sets upper bounds on DEU residues (pebiolc.2), short rotation coppice (pebiolc.1) and 1st generation
-*** feedstocks (pebios + pebioil) from 2030 onwards and phases out pebiolc imports to DEU from 2035 onwards.
-*** Data: sensitivities/BioMIP_BiomassSenstivity.xlsx, see modules/30_biomass/magpie/datainput.gms
+*** sets upper bounds on DEU woody residues (pebiolc.2), short rotation coppice (pebiolc.1) and digestibles (pebiogas.5)
+*** from 2030 onwards, and on 1st generation feedstocks (pebios + pebioil) from 2040 onwards.
+*** Data: sensitivities/BioMIP BiomassSensitivityUpdated.xlsx, see modules/30_biomass/magpie/datainput.gms
 ***  (off):    no BioMIP biomass bounds
 ***  (trends): Current Trends - phase down of 1st generation, SRC expansion, medium residue mobilization
 ***  (frozen): Frozen World - constant 1st generation, no SRC, medium residue mobilization
