@@ -264,6 +264,30 @@ showAreaAndBarPlots(data, items, tot = "PE|Biomass", orderVars = "user", scales 
 
 ## CDR variables 
 
+### Biochar production
+```{r 09_carbon_management/Biochar Plots}
+showLinePlots(data, "SE|Biochar [Mt]")
+showAreaAndBarPlots(
+  data = data,
+  vars = c('SE|Biochar [Mt]|w/o co-product',
+           'SE|Biochar [Mt]|w/ heat', 
+           'SE|Biochar [Mt]|w/ heat and power',
+           'SE|Biochar [Mt]|w/ liquids'),
+
+  tot = 'SE|Biochar [Mt]',
+  scales = 'fixed',
+  orderVars = 'user')
+```
+
+### EW rock spreading
+```{r 09_carbon_management/CO2 EW rock}
+items <- c(
+  "CDR|Rocks spread",
+  "CDR|Rocks weathering"
+)
+walk(items, showLinePlots, data = data)
+```
+
 ## CCS variables 
 
 ### Capture by CO2 origin - Bar

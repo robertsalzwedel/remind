@@ -16,7 +16,7 @@
 
 ***am minimum targets for certain technologies
 q40_ElecBioBound(t,regi)$(t.val gt 2025)..
-    sum(te2rlf(te,rlf)$(sameas(te,"biochp") OR sameas(te,"bioigcc") OR sameas(te,"bioigccc")), vm_cap(t,regi,te,rlf))
+    sum(te2rlf(te,rlf)$(sameas(te,"biochp") OR sameas(te,"bioigcc") OR sameas(te,"bioigccc") OR sameas(te,"biodigestCHP")), vm_cap(t,regi,te,rlf))
       =g= p40_ElecBioBound(t,regi) * 0.001
 ;	 
 

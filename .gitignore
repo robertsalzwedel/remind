@@ -67,6 +67,7 @@ core/magicc/
 !core/magicc/magicc_scen_bau.inc
 !core/magicc/magicc_scen_450.inc
 !core/magicc/magicc_scen_550.inc
+outputarchive/
 
 # ignore climate assessment data
 scripts/utils/climate_assessment/PYTHONLOG*.out

@@ -116,6 +116,14 @@ loop(ttot$(ttot.val ge 2010 AND ttot.val le 2020),
     / (pm_cf(ttot,regi,"biodigestGAS") * pm_ts(ttot));
 );
 
+*** RoSa: limit biomass power from bioigcc to IEA data in 2010-2020 for Germany. Otherwise, the model builds bioigcc far
+*** beyond history (cheap residues, high electricity prices in the historical period), driving up pebiolc demand and imports.
+loop(regi$sameas(regi,"DEU"),
+  vm_prodSe.up(t,regi,"pebiolc","seel","bioigcc")$(t.val ge 2010 AND t.val le 2020)
+    = 1.2 * pm_IO_output(t,regi,"pebiolc","seel","bioigcc");
+  vm_prodSe.up(t,regi,"pebiolc","seel","biochp")$(t.val ge 2010 AND t.val le 2020)
+    = 1.2 * pm_IO_output(t,regi,"pebiolc","seel","biochp");
+);
 
 *** lower bounds on near-term capacity additions based on projects in "under construction" and "planned" category and
 *** the respective assumptions on completion rates (i.e. shares of projects that will actucally be completed and start operation until 2030,

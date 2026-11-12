@@ -99,16 +99,16 @@ loop(regi$(sameAs(regi,"DEU")),
 *** divide by capacity factor to get from seel production in TWa to capacity in TW
                                             / pm_cf(t,regi,"gaschp");
 
-        vm_cap.lo(t,regi,"biochp","1")= 0.15
-*** total FE heat demand from industry and buildings calibration trajectories
-                                            * (pm_cesdata(t,regi,"feheb","quantity")
-                                                + pm_cesdata(t,regi,"feheb","quantity"))
-*** divide by tdhes efficiency get from FE heat to SE heat, i.e. take into account heat transmission losses
-                                            / pm_eta_conv(t,regi,"tdhes")
-*** divide by pm_prodCouple to get from heat production to production of seel
-                                            /  pm_prodCouple(regi,"pebiolc","seel","biochp","sehe")
-*** divide by capacity factor to get from seel production in TWa to capacity in TW
-                                            / pm_cf(t,regi,"biochp");
+*         vm_cap.lo(t,regi,"biochp","1")= 0.05
+* *** total FE heat demand from industry and buildings calibration trajectories
+*                                             * (pm_cesdata(t,regi,"feheb","quantity")
+*                                                 + pm_cesdata(t,regi,"feheb","quantity"))
+* *** divide by tdhes efficiency get from FE heat to SE heat, i.e. take into account heat transmission losses
+*                                             / pm_eta_conv(t,regi,"tdhes")
+* *** divide by pm_prodCouple to get from heat production to production of seel
+*                                             /  pm_prodCouple(regi,"pebiolc","seel","biochp","sehe")
+* *** divide by capacity factor to get from seel production in TWa to capacity in TW
+*                                             / pm_cf(t,regi,"biochp");
 
         vm_cap.up(t,regi,"biochp","1")= 0.25
 *** total FE heat demand from industry and buildings calibration trajectories

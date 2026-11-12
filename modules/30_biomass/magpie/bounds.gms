@@ -133,6 +133,12 @@ loop(regi$sameas(regi,"DEU"),
 *    vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2030) = 0.60 * sm_EJ_2_TWa;
 *** 2nd generation bounds
 *    vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2030) = 0.5 * sm_EJ_2_TWa;
+*** Residue bounds 2010-2025: fixed cap of 650 PJ/yr instead of the fluctuating MAgPIE potential
+*** (2005: 571 PJ/yr, BioMIP woody residues from 2030: 529.84 PJ/yr)
+    vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val gt 2005 AND t.val lt 2030) = 650 * sm_EJ_2_TWa / 1000;
+*** no biomass imports to Germany (only pebiolc is traded), small value instead of zero for numerical reasons
+*    vm_Mport.up(t,regi,"pebiolc")$(t.val ge 2010 AND t.val lt 2030) = 100 * sm_EJ_2_TWa / 1000;
+    vm_Mport.up(t,regi,"pebiolc")$(t.val ge 2030) = 1e-6;
 );
 
 *'
@@ -369,9 +375,9 @@ $ENDIF.bioprod_regi_lim
 *** The 1st generation limit (pebios + pebioil) is applied via q30_limit_1stgen_total.
 $ifthen.bioMIP not "%cm_bioMIP_bio%" == "off"
 loop(regi$sameas(regi,"DEU"),
-  vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2035)  = max(1e-6, p30_bioMIP_pot(t,"res") * sm_EJ_2_TWa / 1000);
-  vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2035)  = max(1e-6, p30_bioMIP_pot(t,"src") * sm_EJ_2_TWa / 1000);
-  vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2035) = max(1e-6, p30_bioMIP_pot(t,"digestible") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiolc","2")$(t.val ge 2030)  = max(1e-6, p30_bioMIP_pot(t,"res") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiolc","1")$(t.val ge 2030)  = max(1e-6, p30_bioMIP_pot(t,"src") * sm_EJ_2_TWa / 1000);
+  vm_fuExtr.up(t,regi,"pebiogas","5")$(t.val ge 2030) = max(1e-6, p30_bioMIP_pot(t,"digestible") * sm_EJ_2_TWa / 1000);
 *** relax exogenous lower bounds on 1st generation feedstocks, such that q30_limit_1stgen_total can be met
   vm_fuExtr.lo(t,regi,"pebios","5")$(t.val ge 2030)  = 0;
   vm_fuExtr.lo(t,regi,"pebioil","5")$(t.val ge 2030) = 0;
