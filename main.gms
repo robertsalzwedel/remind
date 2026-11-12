@@ -1587,13 +1587,18 @@ $setGLobal cm_bioprod_regi_lim off  !! def off
 ***  (high):   High Biomass - SRC expansion, high residue mobilization
 $setGlobal cm_bioMIP_bio  off  !! def = off  !! regexp = off|trends|frozen|low|high
 *** cm_bioMIP_GCS "BioMIP geological carbon storage sensitivity for Germany (DEU)"
-*** upper bound on total annual CO2 injection in DEU in 2030-2050, no BioMIP bound afterwards.
+*** upper bound on total annual CO2 injection in DEU in 2030-2050, no BioMIP bound afterwards (see cm_bioMIP_GCSlong).
 *** Data: sensitivities/BioMIP_StorageSensitivity.xlsx, see modules/47_regipol/regiCarbonPrice/datainput.gms
 ***  (off):  no BioMIP storage bound
 ***  (low):  failure rate 90%, growth rate 10%  (15 MtCO2/yr in 2050)
 ***  (med):  failure rate 85%, growth rate 15%  (50 MtCO2/yr in 2050)
 ***  (high): failure rate 80%, growth rate 20%  (75 MtCO2/yr in 2050)
 $setGlobal cm_bioMIP_GCS  off  !! def = off  !! regexp = off|low|med|high
+*** cm_bioMIP_GCSlong "BioMIP long-term geological carbon storage bound for Germany (DEU), requires cm_bioMIP_GCS"
+*** continues the cm_bioMIP_GCS path after 2050 linearly until a plateau, see modules/47_regipol/regiCarbonPrice/datainput.gms
+***  (off): no BioMIP storage bound after 2050
+***  (on):  low 20/25/30, med 70/90/100, high 95/115/150 MtCO2/yr in 2055/2060/2070 onwards
+$setGlobal cm_bioMIP_GCSlong  off  !! def = off  !! regexp = off|on
 *** cm_bioMIP_ES "BioMIP exogenous land-use CO2 emissions (co2luc) for Germany (DEU)"
 *** overwrites pm_macBaseMagpie(t,"DEU","co2luc") after 2030, see core/presolve.gms
 *** values are before the Grassi shift (DEU: 0.0165 GtC/yr) is subtracted in the target accounting of 47_regipol

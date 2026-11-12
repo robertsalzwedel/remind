@@ -142,7 +142,8 @@ $endIf.cm_CCSmaxBound
 ***---------------------------------------------------------------------------
 $ifthen.bioMIP_GCS not "%cm_bioMIP_GCS%" == "off"
 
-q47_bioMIP_GCSmax(t,regi)$(sameAs(regi,"DEU") AND t.val ge 2030 AND t.val le 2050)..
+*** active in 2030-2050, and after 2050 if cm_bioMIP_GCSlong is on (wherever p47_bioMIP_GCSmax is defined)
+q47_bioMIP_GCSmax(t,regi)$(sameAs(regi,"DEU") AND p47_bioMIP_GCSmax(t))..
   sum(ccs2te(ccsCo2(enty),enty2,te), sum(teCCS2rlf(te,rlf),vm_co2CCS(t,regi,enty,enty2,te,rlf)))
   =l=
   p47_bioMIP_GCSmax(t) * sm_MtCO2_2_GtC

@@ -319,7 +319,7 @@ $endif.exogDemScen
 
 *** BioMIP geological carbon storage sensitivity for Germany (cm_bioMIP_GCS) [MtCO2/yr]
 *** Source: sensitivities/BioMIP_StorageSensitivity.xlsx. 25 MtCO2/yr of announced projects in DEU for 2032,
-*** scenarios differ by failure rate and growth rate. No BioMIP bound after 2050.
+*** scenarios differ by failure rate and growth rate. No BioMIP bound after 2050, unless cm_bioMIP_GCSlong is on.
 $ifthen.bioMIP_GCS "%cm_bioMIP_GCS%" == "low"
 *** failure rate 90%, growth rate 10%
 p47_bioMIP_GCSmax("2030") =  0.5;
@@ -342,5 +342,23 @@ p47_bioMIP_GCSmax("2040") = 22;
 p47_bioMIP_GCSmax("2045") = 55;
 p47_bioMIP_GCSmax("2050") = 75;
 $endif.bioMIP_GCS
+
+*** BioMIP long-term GCS sensitivity (cm_bioMIP_GCSlong): continue the 2045-2050 increase linearly after 2050
+*** until a plateau of about two times the 2050 value is reached, constant afterwards [MtCO2/yr]
+$ifthen.bioMIP_GCSlong "%cm_bioMIP_GCSlong%" == "on"
+$ifthen.GCSlongScen "%cm_bioMIP_GCS%" == "low"
+p47_bioMIP_GCSmax("2055") = 20;
+p47_bioMIP_GCSmax("2060") = 25;
+p47_bioMIP_GCSmax(ttot)$(ttot.val ge 2070) = 30;
+$elseif.GCSlongScen "%cm_bioMIP_GCS%" == "med"
+p47_bioMIP_GCSmax("2055") = 70;
+p47_bioMIP_GCSmax("2060") = 90;
+p47_bioMIP_GCSmax(ttot)$(ttot.val ge 2070) = 100;
+$elseif.GCSlongScen "%cm_bioMIP_GCS%" == "high"
+p47_bioMIP_GCSmax("2055") = 95;
+p47_bioMIP_GCSmax("2060") = 115;
+p47_bioMIP_GCSmax(ttot)$(ttot.val ge 2070) = 150;
+$endif.GCSlongScen
+$endif.bioMIP_GCSlong
 
 *** EOF ./modules/47_regipol/regiCarbonPrice/datainput.gms
